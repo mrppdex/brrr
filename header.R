@@ -56,5 +56,36 @@ create_header <- function(breaks_widths) {
                 breaks = actual_breaks))
 }
 
-res <- create_header(breaks_widths)
+add_benefit_arrows <- function(obj, neutral_relative_x, direction) {
+    breaks <- obj$breaks
 
+    # last two elements of breaks
+    last_breaks <- breaks[(length(breaks)-1):length(breaks)]
+
+    header_relative_x <- last_breaks[2]*neutral_relative_x + last_breaks[1]*(1-neutral_relative_x)
+
+    # transform header_relative_x to actual x
+    x <- obj$PAGE_LEFT_MARGIN + obj$HEADER_WIDTH*header_relative_x
+
+    # calculate the shortest distance from header_relative_x to one of the last_breaks
+    min_distance_to_breaks <- min(abs(header_relative_x - last_breaks))
+
+    # transform to actual distance
+    distance_to_breaks <- min_distance_to_breaks*obj$HEADER_WIDTH - 0.01
+
+    # use grid to draw an arrow from x with length distance_to_breaks to the right and left
+    # y is 90% of the header height
+
+    grid.lines(x = c(x + 0.01, x + distance_to_breaks), 
+               y = c(1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.9, 1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.9),
+               arrow=arrow(type="closed", length=unit(0.1, "inches")), 
+               gp = gpar(fill =  "#043099", col = "#043099")) 
+
+    grid.lines(x = c(x - 0.01, x - distance_to_breaks),
+                y = c(1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.9, 1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.9),
+                arrow=arrow(type="closed", length=unit(0.1, "inches")), 
+                gp = gpar(fill = "#043099", col = "#043099")) 
+}
+
+my_obj <- create_header(breaks_widths)
+add_benefit_arrows(my_obj, 0.7, 1)
