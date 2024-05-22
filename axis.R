@@ -8,7 +8,20 @@
 
 # set option pp_tick_len
 
-plot_axis <- function(xlength, xpos, ypos, from, to, b, n_ticks, neutral_pos) {
+plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
+                      logscale=FALSE, b = 10) {
+    
+    # when logscale is TRUE stop if from or to is <= 0
+    if (logscale && (from <= 0 || to <= 0)) {
+        stop("from and to must be > 0 when logscale is TRUE")
+    }
+
+    if (logscale) {
+        from <- log(from, base = b)
+        to <- log(to, base = b)
+    }
+
+    neutral_pos <- ifelse(from > to, n_ticks - neutral_pos, neutral_pos)
 
     ratio_rhs <- abs(ifelse(to>from, to/(n_ticks-neutral_pos), from/(n_ticks-neutral_pos)))
     ratio_lhs <- abs(ifelse(to>from, from/neutral_pos, to/neutral_pos))
@@ -21,7 +34,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, b, n_ticks, neutral_pos) {
     # debug print from and to
     cat("from = ", from, " to = ", to, "\n")
 
-    axis_range <- round(seq(from, to, length = n_ticks), 2)
+    axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
     # plot the line of length xlength at x = xpos, y = ypos
     # when length + xpos > 1, the line is cut at PAGE_RIGHT_MARGIN
@@ -43,12 +56,31 @@ plot_axis <- function(xlength, xpos, ypos, from, to, b, n_ticks, neutral_pos) {
     # add the labels
     for (i in 1:length(axis_range)) {
         tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-        grid.text(label = axis_range[i], 
+        grid.text(label = ifelse(logscale, b^(axis_range[i]), axis_range[i]),
                   x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
                   gp = gpar(fontsize = 12))
     }
+
+    # return a function that scales the value x to the position on the axis.
+    # when logscale is TRUE, the function does the log transformation
+    return(function(x) {
+        if (logscale) {
+            return(x = xpos + xlength * (log(x, base = b) - from) / (to - from))
+        } else {
+            return(x = xpos + xlength * (x - from) / (to - from))
+        }
+    })
 }
 
 grid.newpage()
-plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
-          from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 2)
+pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
+          from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
+
+# reversed axis
+pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4, 
+          from = 10, to = 0, b = 10, n_ticks = 6, neutral_pos = 1)
+
+# logaritmic axis
+pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
+          from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, logscale = TRUE)
+pp_log_axis(1e5)
