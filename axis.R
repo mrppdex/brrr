@@ -68,14 +68,21 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     }
 
     # return a function that scales the value x to the position on the axis.
-    # when logscale is TRUE, the function does the log transformation
-    return(function(x) {
+    # when logscale is TRUE, the function does the log transformation. 
+    # 
+
+    return(list(
+      axis_function = function(x) {
         if (logscale) {
             return(x = xpos + xlength * (log(x, base = b) - from) / (to - from))
         } else {
             return(x = xpos + xlength * (x - from) / (to - from))
         }
-    })
+      },
+      from = from,
+      to = to,
+      length = xlength
+    ))
 }
 
 grid.newpage()
@@ -96,4 +103,4 @@ pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2,
           from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
           logscale = TRUE, label = expression(log[10]))
 
-pp_log_rev_axis(1000)
+pp_log_rev_axis$axis_function(1000)
