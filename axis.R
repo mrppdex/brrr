@@ -9,7 +9,7 @@
 # set option pp_tick_len
 
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
-                      logscale=FALSE, b = 10) {
+                      label=NULL, logscale=FALSE, b = 10) {
     
     # when logscale is TRUE stop if from or to is <= 0
     if (logscale && (from <= 0 || to <= 0)) {
@@ -56,9 +56,15 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     # add the labels
     for (i in 1:length(axis_range)) {
         tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-        grid.text(label = ifelse(logscale, b^(axis_range[i]), axis_range[i]),
-                  x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
-                  gp = gpar(fontsize = 12))
+        grid.text(label = ifelse(logscale, as.character(b^(axis_range[i])), as.character(axis_range[i])),
+              x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
+              gp = gpar(fontsize = 12))
+    }
+
+    # add the label
+    if (!is.null(label)) {
+        grid.text(label = label, x = xpos + xlength / 2, y = ypos - 4 * tick_len, just = "top", 
+                  gp = gpar(fontsize = 12, fontface = "bold"))
     }
 
     # return a function that scales the value x to the position on the axis.
@@ -82,5 +88,12 @@ pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4,
 
 # logaritmic axis
 pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
-          from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, logscale = TRUE)
-pp_log_axis(1e5)
+          from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, 
+          logscale = TRUE, label = "log10")
+
+# logarithmic reversed axis with label that has math expression
+pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
+          from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
+          logscale = TRUE, label = expression(log[10]))
+
+pp_log_rev_axis(1000)
