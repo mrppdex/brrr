@@ -11,18 +11,20 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
                      neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
                      show_axis=TRUE) {
 
+     box_height <- n_categories * single_category_height
+
     # plot the xaxis
-    axis <- plot_axis(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, label, logscale, b, show_axis)
-    
+    axis <- plot_axis(xlength, xpos, ypos - box_height, from, to, n_ticks, neutral_pos, label, logscale, b, show_axis)
+
     # plot the box
-    grid.rect(x = xpos, y = ypos, width = axis$length, height = n_categories * single_category_height, 
-              just = c('left', 'bottom'), gp = gpar(fill = "#ded8db43", lty = 1, lwd = 1))
+    grid.rect(x = xpos, y = ypos, width = axis$length, height = box_height, 
+              just = c('left', 'top'), gp = gpar(fill = "#ded8db43", lty = 1, lwd = 1))
 
     # separate each category with a faint vertical line across the whole
     # width of the box
     for (i in 1:(n_categories-1)) {
         grid.lines(x = c(xpos, xpos + axis$length), 
-                   y = c(ypos + i * single_category_height, ypos + i * single_category_height), 
+                   y = c(ypos - i * single_category_height, ypos - i * single_category_height), 
                    gp = gpar(lty = 3, lwd = 1))
     }
     
@@ -30,12 +32,13 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
     axis_transform_fun <- axis$axis_function
 
     grid.lines(x = rep(axis_transform_fun(ifelse(logscale, 1, 0)), 2),
-               y = c(ypos, ypos + n_categories * single_category_height), 
+               y = c(ypos, ypos - n_categories * single_category_height), 
                gp = gpar(lty = 2, lwd = 1))
 
     # return axis and the y positions of the categories
     return(list(axis = axis, 
-                y_pos = seq(ypos, ypos + n_categories * single_category_height, single_category_height)))
+                height = box_height,
+                y_pos = seq(ypos, ypos - n_categories * single_category_height, -single_category_height)))
 }
 
 grid.newpage()
