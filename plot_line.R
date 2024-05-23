@@ -12,7 +12,7 @@ plot_horizontal_seg <- function(box, x, n1, n2=1, N2=1, lty=1, lwd=3, col='black
 }
 
 plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='black') {
-  
+
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
   yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
   
@@ -30,7 +30,7 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='
 # grid.newpage()
 
 # # create a box
-# box2 <- plot_box(0.5, 0.5, 1, 3, 0.02, 3, 5, 1, -2, 'value', FALSE)
+# box2 <- plot_box(0.5, 0.5, 1, 3, 0.02, 3, 5, 1, -2, 'value', FALSE, show_axis=TRUE)
 
 # from_ <- min(box2$axis$from, box2$axis$to)
 # to_ <- max(box2$axis$from, box2$axis$to)
