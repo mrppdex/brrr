@@ -8,10 +8,11 @@
 # and will ho up to the top of the box.
 
 plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height, 
-                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10) {
+                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
+                     show_axis=TRUE) {
 
     # plot the xaxis
-    axis <- plot_axis(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, label, logscale, b)
+    axis <- plot_axis(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, label, logscale, b, show_axis)
     
     # plot the box
     grid.rect(x = xpos, y = ypos, width = axis$length, height = n_categories * single_category_height, 
@@ -46,3 +47,6 @@ box1 <- plot_box(0.5, 0.5, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
 box2 <- plot_box(0.4, 0.4, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
 
 box3 <- plot_box(0.6, 0.6, 1, 3, 0.01, 3, 5, 0, 1, NULL, FALSE)
+
+# test it again, but hide axis
+box4 <- plot_box(0.5, 0.7, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE, show_axis=FALSE)
