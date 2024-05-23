@@ -41,3 +41,8 @@ grid.newpage()
 
 # test the function
 box1 <- plot_box(0.5, 0.5, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
+
+# test it again, with overlapping box
+box2 <- plot_box(0.4, 0.4, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
+
+box3 <- plot_box(0.6, 0.6, 1, 3, 0.01, 3, 5, 0, 1, NULL, FALSE)
