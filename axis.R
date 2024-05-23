@@ -9,7 +9,7 @@
 # set option pp_tick_len
 
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
-                      label=NULL, logscale=FALSE, b = 10) {
+                      label=NULL, logscale=FALSE, b = 10, show_axis=TRUE) {
     
     # when logscale is TRUE stop if from or to is <= 0
     if (logscale && (from <= 0 || to <= 0)) {
@@ -45,26 +45,29 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     # set the length of the ticks
     tick_len <- 0.02 * xlength
 
-    grid.lines(x = c(xpos, xpos + xlength), y = c(ypos, ypos), gp = gpar(lwd = 1))
 
-    # plot the ticks
-    for (i in 1:length(axis_range)) {
-        tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-        grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len, ypos), gp = gpar(lwd = 1))
-    }
+    if (show_axis) {
+        grid.lines(x = c(xpos, xpos + xlength), y = c(ypos, ypos), gp = gpar(lwd = 1))
 
-    # add the labels
-    for (i in 1:length(axis_range)) {
-        tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-        grid.text(label = ifelse(logscale, as.character(b^(axis_range[i])), as.character(axis_range[i])),
-              x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
-              gp = gpar(fontsize = 12))
-    }
+        # plot the ticks
+        for (i in 1:length(axis_range)) {
+            tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
+            grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len, ypos), gp = gpar(lwd = 1))
+        }
 
-    # add the label
-    if (!is.null(label)) {
-        grid.text(label = label, x = xpos + xlength / 2, y = ypos - 4 * tick_len, just = "top", 
-                  gp = gpar(fontsize = 12, fontface = "bold"))
+        # add the labels
+        for (i in 1:length(axis_range)) {
+            tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
+            grid.text(label = ifelse(logscale, as.character(b^(axis_range[i])), as.character(axis_range[i])),
+                x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
+                gp = gpar(fontsize = 12))
+        }
+
+        # add the label
+        if (!is.null(label)) {
+            grid.text(label = label, x = xpos + xlength / 2, y = ypos - 4 * tick_len, just = "top", 
+                    gp = gpar(fontsize = 12, fontface = "bold"))
+        }
     }
 
     # return a function that scales the value x to the position on the axis.
