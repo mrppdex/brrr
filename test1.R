@@ -65,7 +65,8 @@ for (est in unique(mock_data_meta$estimator)) {
 
 for (est in unique(mock_data_meta$estimator)) {
 
-  column_names <- c('benefit', 'treatment', 'placebo', 'col3')
+  column_names   <- c('benefit', 'treatment', 'placebo', 'col3')
+  value_collapse <- c(TRUE, FALSE, FALSE, FALSE)
   
   mock_data_subset <- mock_data %>% filter(estimator==est)
 
@@ -83,7 +84,10 @@ for (est in unique(mock_data_meta$estimator)) {
     # add labels to each box
     for (cn_idx in seq_along(column_names)) {
       column_name <- column_names[cn_idx]
-      unique_column_names <- unique(data_sub_subset[[column_name]])
+      unique_column_names <- data_sub_subset[[column_name]]
+      if(value_collapse[cn_idx]) {
+        unique_column_names <- unique(unique_column_names)
+      }
       
       for (j in 1:length(unique_column_names)) {
         add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
