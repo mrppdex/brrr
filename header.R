@@ -58,7 +58,8 @@ create_header <- function(breaks_widths, labels=NULL) {
                 HEADER_HEIGHT = HEADER_HEIGHT,
                 HEADER_WIDTH = HEADER_WIDTH,
                 breaks = actual_breaks,
-                breaks_positions = actual_breaks*HEADER_WIDTH + PAGE_LEFT_MARGIN))
+                breaks_positions = actual_breaks*HEADER_WIDTH + PAGE_LEFT_MARGIN,
+                name = 'header'))
 }
 
 add_benefit_arrows <- function(obj, neutral_relative_x, direction='up') {
