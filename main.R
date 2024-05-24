@@ -1,8 +1,13 @@
 grid.newpage()
 
 # create header
-breaks_widths <- c(0.2, 0.1, 0.1)
-my_header <- create_header(breaks_widths, c('Endpoint', 'Treatment', 'Placebo'))
+breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
+h_labels <- c('Benefits', 'Treatment\n(N=100)', 'Placebo\n(N=100)',
+              'Comparison\nHR or Odds Ratio\n(95% CI)')
+
+stopifnot(length(breaks_widths)==length(h_labels))
+
+my_header <- create_header(breaks_widths, h_labels)
 
 # function to generate a header, add benefit arrows and plot and boxex.
 # The function calculates the bottom edge of all plotted elements and
@@ -48,9 +53,14 @@ add_benefits_box <- function(obj, spacing, n_categories, single_category_height,
     # yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
     # and plots a text at that position
 
-    add_label <- function(label, leveln, subleveln, n=1, N=1) {
+    add_label <- function(label, leveln, subleveln, n=1, N=1, isglobal=FALSE) {
+
+        y_pos <- box1$y_pos
+
         xvec <- breaks_positions[leveln]
-        yvec <- box1$y_pos[subleveln] + (box1$y_pos[subleveln+1] - box1$y_pos[subleveln])*n/(N+1)
+        
+        yvec <- y_pos[subleveln] + (y_pos[subleveln+1] - y_pos[subleveln])*n/(N+1)
+        yvec <- ifelse(isglobal, (y_pos[1] + y_pos[length(y_pos)])/2, yvec)
 
         grid.text(label = label, 
                   x = unit(xvec, 'npc'), y = unit(yvec, 'npc'), just = c('center', 'center'))

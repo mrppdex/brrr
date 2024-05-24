@@ -13,7 +13,7 @@ HEADER_WIDTH  <- 1 - PAGE_LEFT_MARGIN - PAGE_RIGHT_MARGIN
 # reset grid page
 grid.newpage()
 
-breaks_widths <- c(0.2, 0.1, 0.1)
+breaks_widths <- c(0.2, -0.1, 0.1)
 
 # create header
 create_header <- function(breaks_widths, labels=NULL) {
@@ -22,7 +22,7 @@ create_header <- function(breaks_widths, labels=NULL) {
     stop("Length of labels must be the same as length of breaks_widths")
   }
 
-  breaks <- c(cumsum(breaks_widths))
+  breaks <- c(cumsum(abs(breaks_widths)))
   
   # use grid to plot a rectangle with specified margins
   grid.rect(x = PAGE_LEFT_MARGIN, y = 1 - PAGE_TOP_MARGIN,
@@ -34,6 +34,7 @@ create_header <- function(breaks_widths, labels=NULL) {
   # as the ratio of the width of the rectangle
   
   for (i in seq_along(breaks)) {
+    if (breaks_widths[i] < 0) next
     grid.lines(x = c(breaks[i], breaks[i])*HEADER_WIDTH+PAGE_LEFT_MARGIN, 
                y = c(1 - PAGE_TOP_MARGIN, 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT),
                gp = gpar(col = "black"))

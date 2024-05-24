@@ -58,7 +58,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
         # add the labels
         for (i in 1:length(axis_range)) {
             tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-            grid.text(label = ifelse(logscale, as.character(b^(axis_range[i])), as.character(axis_range[i])),
+            grid.text(label = ifelse(logscale, sprintf('%.2f', b^(axis_range[i])), as.character(axis_range[i])),
                 x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
                 gp = gpar(fontsize = 12))
         }
