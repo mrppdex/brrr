@@ -36,7 +36,8 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
                gp = gpar(lty = 2, lwd = 1))
 
     # return axis and the y positions of the categories
-    return(list(axis = axis, 
+    return(list(axis = axis,
+                name = 'box', 
                 height = box_height,
                 y_pos = seq(ypos, ypos - n_categories * single_category_height, -single_category_height)))
 }
