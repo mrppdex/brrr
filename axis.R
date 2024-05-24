@@ -26,7 +26,9 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     ratio_rhs <- abs(ifelse(to>from, to/(n_ticks-neutral_pos), from/(n_ticks-neutral_pos)))
     ratio_lhs <- abs(ifelse(to>from, from/neutral_pos, to/neutral_pos))
 
+    
     ratio <- max(ratio_rhs, ratio_lhs)
+    ratio <- ifelse(logscale, ceiling(abs(ratio))*sign(ratio), ratio)
 
     from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
     to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
@@ -55,12 +57,27 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len, ypos), gp = gpar(lwd = 1))
         }
 
+        format_log_ticks <- function(x, b) {
+            if(b^abs(x)>=1e3) {
+                eval_txt <- sprintf('expression(%g^%g)', b, x)
+                return(eval(parse(text = eval_txt)))
+            } else {
+                if(x<0) {
+                    return(sprintf('1/%g', b^(-x)))
+                } else {
+                    return(sprintf('%g', b^x))
+                }
+            }
+        }
+
         # add the labels
         for (i in 1:length(axis_range)) {
             tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
-            grid.text(label = ifelse(logscale, sprintf('%.2f', b^(axis_range[i])), as.character(axis_range[i])),
-                x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
-                gp = gpar(fontsize = 12))
+            grid.text(label = ifelse(logscale, 
+                                     format_log_ticks(axis_range[i], b), 
+                                     as.character(axis_range[i])),
+                      x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
+                      gp = gpar(fontsize = 12))
         }
 
         # add the label
@@ -89,21 +106,24 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 }
 
 grid.newpage()
-pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
-          from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
+# pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
+#           from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
 
-# reversed axis
-pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4, 
-          from = 10, to = 0, b = 10, n_ticks = 6, neutral_pos = 1)
+# # reversed axis
+# pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4, 
+#           from = 10, to = 0, b = 10, n_ticks = 6, neutral_pos = 1)
 
-# logaritmic axis
-pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
-          from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, 
-          logscale = TRUE, label = "log10")
+# # logaritmic axis
+# pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
+#           from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, 
+#           logscale = TRUE, label = "from=0.1 to 1000")
 
 # logarithmic reversed axis with label that has math expression
 pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
           from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
-          logscale = TRUE, label = expression(log[10]))
+          logscale = TRUE, label = 'from=1000 to 0.1', show_axis=TRUE)
 
-pp_log_rev_axis$axis_function(1000)
+# # another logaritmic axis
+# pp_log_axis2 <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.1, 
+#           from = 1.12, to = 99, b = 10, n_ticks = 6, neutral_pos = 1, 
+#           logscale = TRUE, label = "from=1.12 to 99")

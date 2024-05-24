@@ -1,12 +1,18 @@
 library(dplyr)
 
+source("header.R")
+source("plot_box.R")
+source("plot_line.R")
+source("main.R")
+
+
 mock_data <- tribble(
-  ~benefit, ~treatment, ~placebo, ~estimator, ~value, ~lower, ~upper,
-  "End Point 1A", 0.8, 0.6, "HR", 1.1, 0.5, 1.2,
-  "End Point 1A", 0.8, 0.6, "HR", 1.6, 0.9, 2.0,
-  "End Point 1B", 0.7, 0.5, "HR",  0.7, 0.4, 1.1,
-  "End Point 2A", 0.7, 0.5, "OR",  1, 0.4, 1.1, 
-  "End Point 2B", 0.7, 0.5, "OR",  0.45, 0.4, 0.5
+  ~benefit, ~treatment, ~placebo, ~estimator, ~value, ~lower, ~upper, ~reversed,
+  "End Point 1A", 0.8, 0.6, "Hazard Ratio (95% CI)", 1.1, 0.5, 1.2, FALSE,
+  "End Point 1A", 0.8, 0.6, "Hazard Ratio (95% CI)", 1.6, 0.9, 2.0, FALSE, 
+  "End Point 1B", 0.7, 0.5, "Hazard Ratio (95% CI)",  0.7, 0.4, 1.1, FALSE,
+  "End Point 2A", 0.7, 0.5, "Odds Ratio (95% CI)",  1, 0.4, 1.1, TRUE, 
+  "End Point 2B", 0.7, 0.5, "Odds Ratio (95% CI)",  0.45, 0.4, 0.5, TRUE
 )
 
 favor_direction <- 'up'
@@ -28,9 +34,10 @@ mock_data_meta <-
   mock_data %>% group_by(estimator) %>% 
   mutate(ncats=length(unique(benefit))) %>%
   mutate(minval=min(value, lower, upper), maxval=max(value, lower, upper)) %>%
+  mutate(reversed=any(reversed)) %>%
   group_by(benefit, estimator) %>% mutate(nsubcats=n()) %>%
   ungroup() %>%
-  distinct(benefit, estimator, ncats, nsubcats, minval, maxval)
+  distinct(benefit, estimator, ncats, nsubcats, minval, maxval, reversed)
 
 last_graph_part <- header2
 
@@ -46,8 +53,11 @@ for (est in unique(mock_data_meta$estimator)) {
 
   spacing <- ifelse(last_graph_part$name=='header', 0, 0.05)
 
-  last_graph_part <- add_benefits_box(last_graph_part, spacing, ncats, 0.03, 
-                                      3, 6, minval, maxval, label=est, logscale=TRUE, b=10, 
+  is_reversed <- any(mock_data_meta_subset$reversed)
+
+  last_graph_part <- add_benefits_box(last_graph_part, spacing, ncats, 0.03, 3, 6, 
+                                      ifelse(is_reversed, maxval, minval), 
+                                      ifelse(is_reversed, minval, maxval), label=est, logscale=TRUE, b=2, 
                                       show_axis=TRUE, direction=favor_direction)
 
   boxes[[est]] <- list(box=last_graph_part)
@@ -76,16 +86,17 @@ for (est in unique(mock_data_meta$estimator)) {
       unique_column_names <- unique(data_sub_subset[[column_name]])
       
       for (j in 1:length(unique_column_names)) {
-        add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names))
+        add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
+                  col=br_palette[j])
       }
       
     }
 
     # plot the forest plot
     for(k in 1:nrow(data_sub_subset)) {
-      print(box$box$box)
       plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
-                       data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), col='purple')
+                       data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
+                       col=NULL)
     }
   }  
 

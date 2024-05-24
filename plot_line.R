@@ -1,3 +1,11 @@
+# palette of 10 diverging colors
+# br_palette <- c("#1F9E89", "#440154", "#FDE725", "#35B779", "#6DCD59", "#B4DE2C", "#3E4A89",
+#                 "#26828E", "#482878", "#31688E")
+
+br_palette <- c("black", "rebeccapurple" = "#663399", "cornflowerblue" = "#6495ED", 
+                "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
+                "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A")
+
 # using axis$axis_function, and other elements returned from plot_axis
 # create a function that does forest plot
 
@@ -26,8 +34,16 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='
 }
 
 # using horizontal segment and dot, plot a forest plot
-plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1, col='purple') {
+plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1, col='#663399') {
   
+  if (is.null(col) & N2>1) {
+    col <- br_palette[n2]
+  } else if(!is.null(col) & N2>1 & length(col) == N2) {
+    col <- col[n2]
+  } else if(is.null(col) & N2==1) {
+    col <- br_palette[1]
+  }
+
   plot_horizontal_seg(box, c(x_lower, x_upper), n1, n2, N2, col=col)
   plot_dot(box, x_dot, n1, n2, N2, col=col)
   

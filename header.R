@@ -63,7 +63,8 @@ create_header <- function(breaks_widths, labels=NULL) {
                 name = 'header'))
 }
 
-add_benefit_arrows <- function(obj, neutral_relative_x, direction='up') {
+add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
+                               labels=c('Favors LY', 'Favors Placebo')) {
     breaks <- obj$breaks
 
     # last two elements of breaks
@@ -89,7 +90,7 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up') {
                gp = gpar(fill =  "#043099", col = "#043099")) 
 
     # draw text above the arrow
-    grid.text(label = ifelse(direction=='up', 'Prefers LY', 'Prefers Placebo'), 
+    grid.text(label = ifelse(direction=='up', labels[1], labels[2]), 
               x = x + distance_to_breaks/2, 
               y = 1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.5,
               just = c('center', 'center'))
@@ -99,11 +100,11 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up') {
                 arrow=arrow(type="closed", length=unit(0.1, "inches")), 
                 gp = gpar(fill = "#043099", col = "#043099")) 
 
-    grid.text(label = ifelse(direction=='up', 'Prefers Placebo', 'Prefers LY'),
+    grid.text(label = ifelse(direction=='up', labels[2], labels[1]),
               x = x - distance_to_breaks/2, 
               y = 1 - obj$PAGE_TOP_MARGIN - obj$HEADER_HEIGHT*0.5,
               just = c('center', 'center'))
 }
 
 my_header <- create_header(breaks_widths, c('Endpoint', 'Treatment', 'Dose'))
-add_benefit_arrows(my_header, 0.7, 'up')
+add_benefit_arrows(my_header, 0.7)

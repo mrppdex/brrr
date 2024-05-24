@@ -53,7 +53,9 @@ add_benefits_box <- function(obj, spacing, n_categories, single_category_height,
     # yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
     # and plots a text at that position
 
-    add_label <- function(label, leveln, subleveln, n=1, N=1, isglobal=FALSE) {
+    add_label <- function(label, leveln, subleveln, n=1, N=1, 
+                          fontsize=10, fontface='bold', col='black', isglobal=FALSE) 
+    {
 
         y_pos <- box1$y_pos
 
@@ -63,7 +65,8 @@ add_benefits_box <- function(obj, spacing, n_categories, single_category_height,
         yvec <- ifelse(isglobal, (y_pos[1] + y_pos[length(y_pos)])/2, yvec)
 
         grid.text(label = label, 
-                  x = unit(xvec, 'npc'), y = unit(yvec, 'npc'), just = c('center', 'center'))
+                  x = unit(xvec, 'npc'), y = unit(yvec, 'npc'), just = c('center', 'center'),
+                  gp = gpar(fontsize = fontsize, fontface = fontface, col=col))
     }
 
     return(list(label_fun=add_label, box = box1, name='box', header=header, y_pos = min(box1$y_pos)))
