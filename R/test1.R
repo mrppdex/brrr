@@ -91,12 +91,12 @@ for (est in unique(mock_data_meta[[split_axis_by_col]])) {
   add_label <- box$box$label_fun
   ncats <- box$ncats
 
-  unique_benefits <- unique(mock_data_subset[[split_box_by_col]])
+  unique_endpoints <- unique(mock_data_subset[[split_box_by_col]])
 
   # plot data
-  for (ben_idx in seq_along(unique_benefits)) {
+  for (ben_idx in seq_along(unique_endpoints)) {
 
-    ben <- unique_benefits[ben_idx]
+    ben <- unique_endpoints[ben_idx]
     data_sub_subset <- mock_data_subset %>% 
         filter(if_all(split_box_by_col, ~ .x==ben)) 
 
