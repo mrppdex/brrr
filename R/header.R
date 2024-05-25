@@ -1,5 +1,3 @@
-library(grid)
-
 # create header
 #' Create a header for a page
 #'
@@ -15,10 +13,14 @@ library(grid)
 #' @return The created header.
 #'
 #' @examples
+#' \dontrun{
 #' grid.newpage()
 #' create_header(c(1, 2, 3), c("A", "B", "C"))
 #' create_header(c(1, 2, 3), options = page_options$new())
-#'
+#' }
+#' 
+#' @import grid
+#' 
 #' @export
 create_header <- function(breaks_widths, labels=NULL, options=page_options$new()) {
 
@@ -85,24 +87,24 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
 #' @return None
 #'
 #' @examples
+#' \dontrun{
 #' # Create a plot object
-#' obj <- plot_object()
+#' obj <- create_header(c(1, 2, 3))
 #'
 #' # Add benefit arrows to the header
 #' add_benefit_arrows(obj, neutral_relative_x = 0.5, direction = 'up',
 #'                    labels = c('Favors LY', 'Favors Placebo'), col = '#043099')
+#' }
 #'
 #' @export
-add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
-                                                             labels=c('Favors LY', 'Favors Placebo'), col='#043099') {
-    # Function code here
-}
 add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
                                labels=c('Favors LY', 'Favors Placebo'), col='#043099') {
     breaks <- obj$breaks
 
     HEADER_HEIGHT <- obj$options$get_page_parameter('HEADER_HEIGHT')
     PAGE_TOP_MARGIN <- obj$options$get_page_parameter('PAGE_TOP_MARGIN')
+    PAGE_LEFT_MARGIN <- obj$options$get_page_parameter('PAGE_LEFT_MARGIN')
+    HEADER_WIDTH <- obj$options$get_page_parameter('HEADER_WIDTH')
 
     # last two elements of breaks
     last_breaks <- breaks[(length(breaks)-1):length(breaks)]

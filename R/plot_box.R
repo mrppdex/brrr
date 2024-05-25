@@ -17,7 +17,6 @@
 #' @param logscale Logical value indicating whether to use logarithmic scale.
 #' @param b The base for logarithmic scale.
 #' @param show_axis Logical value indicating whether to show the axis.
-#' @param options An instance of the page_options class specifying the options for the page.
 #'
 #' @return A list containing the following elements:
 #'  - axis: The axis of the box.
@@ -27,12 +26,13 @@
 #' 
 #'
 #' @examples
+#' \dontrun{
 #' grid.newpage()
 #' box1 <- plot_box(0.5, 0.5, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
 #' box2 <- plot_box(0.4, 0.4, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE)
 #' box3 <- plot_box(0.6, 0.6, 1, 3, 0.01, 3, 5, 0, 1, NULL, FALSE)
 #' box4 <- plot_box(0.5, 0.7, 1, 3, 0.05, 3, 5, 0, 1, expression(x[1]^2), FALSE, show_axis=FALSE)
-#'
+#' }
 plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height, 
                      neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
                      show_axis=TRUE) {
@@ -86,13 +86,12 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @param b The base for the logarithmic scale (default is 10).
 #' @param show_axis Whether to show the axis for the box (default is TRUE).
 #' @param direction The direction of the benefit arrows (default is 'up').
+#' @param userect Whether to use a rectangle for the box (default is FALSE).
 #'
 #' @return A list containing the label function, the box object, the options, the name, the header, and the y position.
 #'
 #' @examples
-#' # Create a header object
-#' header <- create_header(...)
-#'
+#' \dontrun{
 #' grid.newpage()
 #' # create header
 #' breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
@@ -155,13 +154,8 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' simulate_forest_plot(box1_data$box, 3, col='purple')
 #' simulate_forest_plot(box2_data$box, 1, col='purple')
 #' simulate_forest_plot(box3_data$box, 2, col='forestgreen')
-#' 
+#' }
 #' @export
-add_box <- function(obj, spacing, n_categories, single_category_height, 
-                                        neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                                        show_axis=TRUE, direction='up') {
-    # Function implementation
-}
 add_box <- function(obj, spacing, n_categories, single_category_height, 
                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
                     show_axis=TRUE, direction='up', userect=FALSE) {

@@ -16,11 +16,10 @@
 #' @return None
 #'
 #' @examples
-#' # Create a box plot
-#' box <- boxplot(mtcars$mpg)
-#'
+#' \dontrun{
 #' # Plot a horizontal segment on the box plot
 #' plot_horizontal_seg(box, x = 1, n1 = 20, n2 = 30, N2 = 2, lty = 2, lwd = 2, col = 'red')
+#' }
 #'
 plot_horizontal_seg <- function(box, x, n1, n2=1, N2=1, lty=1, lwd=3, col='black') {
 
@@ -32,6 +31,28 @@ plot_horizontal_seg <- function(box, x, n1, n2=1, N2=1, lty=1, lwd=3, col='black
     
 }
 
+#' Plot a long rectangle on a given plot
+#'
+#' This function plots a long rectangle on a given plot using the specified parameters.
+#'
+#' @param box The plot box object containing axis information
+#' @param x The x-coordinates of the rectangle
+#' @param n1 The index of the y-axis position to use for the rectangle
+#' @param n2 The position of the rectangle along the y-axis (default is 1)
+#' @param N2 The total number of positions along the y-axis (default is 1)
+#' @param height The height of the rectangle (default is 0.015)
+#' @param lty The line type of the rectangle (default is 1)
+#' @param lwd The line width of the rectangle (default is 3)
+#' @param col The color of the rectangle (default is 'black')
+#'
+#' @return None
+#'
+#' @examples
+#' # Create a plot box object
+#' \dontrun{
+#' # Plot a long rectangle
+#' plot_long_rectangle(box, x = c(0.2, 0.8), n1 = 1)
+#' }
 plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd=3, col='black') {
 
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
@@ -62,8 +83,10 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
 #' @return None
 #'
 #' @examples
-#' plot_dot(box = my_box, x = 0.5, n1 = 10, n2 = 2, N2 = 20, pch = 19, size = unit(1, 'char'), col = 'black')
-#'
+#' \dontrun{
+#' plot_dot(box = my_box, x = 0.5, n1 = 10, n2 = 2, N2 = 20, pch = 19, size = unit(1, 'char'), 
+#'          col = 'black')
+#' }
 plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='black') {
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
   yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
@@ -91,10 +114,14 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='
 #' @param N2 The N2 parameter (default is 1).
 #' @param col The color of the forest tree (default is '#663399').
 #' @param br_palette The color palette to use (default is page_options$get_palette()).
+#' @param userect The userect parameter (default is FALSE).
+#' @param height The height of the rectangle, used when userect is TRUE. When NULL, 
+#'        the height is set to 1/5 of the box height.
 #'
 #' @return None
 #'
 #' @examples
+#' \dontrun{
 #' # Create a box
 #' box2 <- plot_box(0.5, 0.5, 1, 3, 0.02, 3, 5, 1, -2, 'value', FALSE, show_axis=TRUE)
 #'
@@ -111,6 +138,7 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='
 #' plot_dot(box2, runif(1, x_lower[1], x_upper[1]), 1, col='purple')
 #' plot_dot(box2, runif(1, x_lower[2], x_upper[2]), 2, col='purple')
 #' plot_dot(box2, runif(1, x_lower[3], x_upper[3]), 3, col='purple')
+#' }
 #'
 plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1, 
                              col='#663399', userect=FALSE, height=NULL,

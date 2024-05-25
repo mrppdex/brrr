@@ -1,9 +1,12 @@
+# library(dplyr)
+
+# source("R/header.R")
+# source("R/plot_box.R")
+# source("R/plot_constructs.R")
+
+library(tidyr)
 library(dplyr)
-
-source("R/header.R")
-source("R/plot_box.R")
-source("R/plot_constructs.R")
-
+library(grid)
 
 mock_data <- tribble(
   ~benefit, ~treatment, ~placebo, ~estimator, ~value, ~lower, ~upper, ~reversed,
@@ -90,7 +93,7 @@ for (est in unique(mock_data_meta$estimator)) {
       
       for (j in 1:length(unique_column_names)) {
         add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
-                  col=br_palette[j])
+                  col=box$box$header$options$get_palette()[j])
       }
       
     }
