@@ -7,6 +7,11 @@
 An object of class \code{page_options}
 }
 \description{
+Define a class for page options
+
+Define a class for page options
+}
+\details{
 This class represents the options for a page layout.
 It includes properties for the page margins, header height, and color palette.
 }
@@ -45,6 +50,7 @@ It includes properties for the page margins, header height, and color palette.
 \if{html}{\out{<a id="method-page_options-new"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-new}{}}}
 \subsection{Method \code{new()}}{
+Initialize the page options.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$new(
   PAGE_TOP_MARGIN = 0.05,
@@ -75,46 +81,83 @@ It includes properties for the page margins, header height, and color palette.
 \if{html}{\out{<a id="method-page_options-get_palette"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-get_palette}{}}}
 \subsection{Method \code{get_palette()}}{
+Get the color palette for the page.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$get_palette()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+The color palette for the page.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-page_options-set_palette"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-set_palette}{}}}
 \subsection{Method \code{set_palette()}}{
+Set the color palette for the page.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$set_palette(palette)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{palette}}{The color palette to set.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-page_options-get_page_parameters"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-get_page_parameters}{}}}
 \subsection{Method \code{get_page_parameters()}}{
+Get the page parameters.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$get_page_parameters()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+A list of the page parameters.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-page_options-get_page_parameter"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-get_page_parameter}{}}}
 \subsection{Method \code{get_page_parameter()}}{
+Get a specific page parameter.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$get_page_parameter(parameter)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parameter}}{The parameter to get.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The value of the parameter.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-page_options-set_page_parameter"></a>}}
 \if{latex}{\out{\hypertarget{method-page_options-set_page_parameter}{}}}
 \subsection{Method \code{set_page_parameter()}}{
+Set a specific page parameter.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{page_options$set_page_parameter(parameter, value)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{parameter}}{The parameter to set.}
+
+\item{\code{value}}{The value to set.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-page_options-clone"></a>}}
