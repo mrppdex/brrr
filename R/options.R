@@ -3,21 +3,6 @@
 #' This class represents the options for a page layout.
 #' It includes properties for the page margins, header height, and color palette.
 #' 
-#' @param PAGE_TOP_MARGIN The top margin of the page.
-#' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.
-#' @param PAGE_LEFT_MARGIN The left margin of the page.
-#' @param PAGE_RIGHT_MARGIN The right margin of the page.
-#' @param HEADER_HEIGHT The height of the header.
-#' @param HEADER_WIDTH The width of the header.
-#' @param br_palette The color palette for the page.
-#' 
-#' @method initialize
-#' @method get_palette
-#' @method set_palette
-#' @method get_page_parameters
-#' @method get_page_parameter
-#' @method set_page_parameter
-#' 
 #' @field PAGE_TOP_MARGIN The top margin of the page.
 #' @field PAGE_BOTTOM_MARGIN The bottom margin of the page.
 #' @field PAGE_LEFT_MARGIN The left margin of the page.
@@ -40,6 +25,12 @@ page_options <- R6Class("page_options",
                             br_palette = c("black", "rebeccapurple" = "#663399", "cornflowerblue" = "#6495ED", 
                                            "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
                                            "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A"),
+                            #' @description Initialize the page options.
+                            #' @param PAGE_TOP_MARGIN The top margin of the page.
+                            #' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.
+                            #' @param PAGE_LEFT_MARGIN The left margin of the page.
+                            #' @param PAGE_RIGHT_MARGIN The right margin of the page.
+                            #' @param HEADER_HEIGHT The height of the header.
                             initialize = function(PAGE_TOP_MARGIN = 0.05,
                                                   PAGE_BOTTOM_MARGIN = 0.05,
                                                   PAGE_LEFT_MARGIN = 0.05,
@@ -52,12 +43,18 @@ page_options <- R6Class("page_options",
                                 self$HEADER_HEIGHT <- HEADER_HEIGHT
                                 self$HEADER_WIDTH <- 1 - PAGE_LEFT_MARGIN - PAGE_RIGHT_MARGIN
                             },
+                            #' @description Get the color palette for the page.
+                            #' @return The color palette for the page.
                             get_palette = function() {
                                 return(self$br_palette)
                             },
+                            #' @description Set the color palette for the page.
+                            #' @param palette The color palette to set.
                             set_palette = function(palette) {
                                 self$br_palette <- palette
                             },
+                            #' @description Get the page parameters.
+                            #' @return A list of the page parameters.
                             get_page_parameters = function() {
                                 return(list(PAGE_TOP_MARGIN = self$PAGE_TOP_MARGIN,
                                              PAGE_BOTTOM_MARGIN = self$PAGE_BOTTOM_MARGIN,
@@ -66,9 +63,15 @@ page_options <- R6Class("page_options",
                                              HEADER_HEIGHT = self$HEADER_HEIGHT,
                                              HEADER_WIDTH = self$HEADER_WIDTH))
                             },
+                            #' @description Get a specific page parameter.
+                            #' @param parameter The parameter to get.
+                            #' @return The value of the parameter.
                             get_page_parameter = function(parameter) {
                                 return(self$get_page_parameters()[[parameter]])
                             },
+                            #' @description Set a specific page parameter.
+                            #' @param parameter The parameter to set.
+                            #' @param value The value to set.
                             set_page_parameter = function(parameter, value) {
                                 if (parameter %in% names(self$get_page_parameters())) {
                                     self[[parameter]] <- value
