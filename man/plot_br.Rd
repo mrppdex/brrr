@@ -34,6 +34,8 @@ plot_br(
 
 \item{top_margin}{An optional numeric value specifying the top margin of the plot.}
 
+\item{userect}{A logical value specifying whether to use rectangles in the plot.}
+
 \item{value_collapse}{A logical vector specifying whether to collapse the values within each column/row.}
 }
 \value{

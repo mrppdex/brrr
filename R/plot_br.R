@@ -10,6 +10,7 @@
 #' @param neutral_pos A numeric value specifying the neutral position of the plot.
 #' @param num_ticks An optional numeric value specifying the number of ticks on the plot axis.
 #' @param top_margin An optional numeric value specifying the top margin of the plot.
+#' @param userect A logical value specifying whether to use rectangles in the plot.
 #' @param value_collapse A logical vector specifying whether to collapse the values within each column/row.
 #'
 #' @return A list containing the boxes in the plot and the last y-position of the plot.
