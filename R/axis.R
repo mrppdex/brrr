@@ -1,13 +1,31 @@
-
-# use grid to plot horizontal axis. It can be either linear or logaritmic
-# with base b. The axis has ticks determined by outputs of function 'pretty'
-# however the argument 'n' is used to determine the number of ticks. 
-# The axis is plotted in the rectangle determined by the parameters. 
-# The range of the axis is specified in arguments 'from' and 'to'.
-# The axis is labeled with the string 'label'. The argument 'side' is used
-
-# set option pp_tick_len
-
+#' Plot Axis
+#'
+#' This function plots an axis with ticks and labels on a given plot.
+#'
+#' @param xlength The length of the axis line.
+#' @param xpos The x-coordinate of the starting position of the axis line (0 to 1).
+#' @param ypos The y-coordinate of the starting position of the axis line (0 to 1).
+#' @param from The starting value of the axis range.
+#' @param to The ending value of the axis range.
+#' @param n_ticks The number of ticks on the axis.
+#' @param neutral_pos The position of the neutral tick (0 on linear scale, 1 on logarithmic scale).
+#' @param label The label for the axis.
+#' @param logscale Logical value indicating whether to use logarithmic scale.
+#' @param b The base for logarithmic scale.
+#' @param show_axis Logical value indicating whether to show the axis.
+#'
+#' @return A list containing the following elements:
+#'   - axis_function: A function that scales a value to the position on the axis.
+#'   - from: The transformed starting value of the axis range.
+#'   - to: The transformed ending value of the axis range.
+#'   - length: The length of the axis line.
+#'
+#' @examples
+#' # Example usage:
+#' plot_axis(xlength = 0.8, xpos = 0.1, ypos = 0.1, from = 0, to = 10, n_ticks = 5,
+#'           neutral_pos = 3, label = "X-axis", logscale = FALSE, b = 10, show_axis = TRUE)
+#'
+#' @export
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
                       label=NULL, logscale=FALSE, b = 10, show_axis=TRUE) {
     
@@ -105,7 +123,9 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     ))
 }
 
-grid.newpage()
+
+
+#grid.newpage()
 # pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
 #           from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
 
@@ -119,9 +139,9 @@ grid.newpage()
 #           logscale = TRUE, label = "from=0.1 to 1000")
 
 # logarithmic reversed axis with label that has math expression
-pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
-          from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
-          logscale = TRUE, label = 'from=1000 to 0.1', show_axis=TRUE)
+# pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
+#           from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
+#           logscale = TRUE, label = 'from=1000 to 0.1', show_axis=TRUE)
 
 # # another logaritmic axis
 # pp_log_axis2 <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.1, 

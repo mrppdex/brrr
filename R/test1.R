@@ -1,9 +1,8 @@
 library(dplyr)
 
-source("header.R")
-source("plot_box.R")
-source("plot_line.R")
-source("main.R")
+source("R/header.R")
+source("R/plot_box.R")
+source("R/plot_constructs.R")
 
 
 mock_data <- tribble(
@@ -55,7 +54,7 @@ for (est in unique(mock_data_meta$estimator)) {
 
   is_reversed <- any(mock_data_meta_subset$reversed)
 
-  last_graph_part <- add_benefits_box(last_graph_part, spacing, ncats, 0.03, 3, 6, 
+  last_graph_part <- add_box(last_graph_part, spacing, ncats, 0.03, 3, 6, 
                                       ifelse(is_reversed, maxval, minval), 
                                       ifelse(is_reversed, minval, maxval), label=est, logscale=TRUE, b=2, 
                                       show_axis=TRUE, direction=favor_direction)
@@ -96,12 +95,30 @@ for (est in unique(mock_data_meta$estimator)) {
       
     }
 
+    cat('so far so good\n')
     # plot the forest plot
     for(k in 1:nrow(data_sub_subset)) {
       plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
                        data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
-                       col=NULL)
+                       col=NULL, br_palette=box$box$header$options$get_palette())
     }
   }  
 
 }
+
+new_options <- page_options$new()
+new_options$set_page_parameter('PAGE_TOP_MARGIN', 1-boxes[[2]]$box$y_pos+0.05)
+
+# risk header labels
+risk_labels <- c('Risk', h_labels[2:length(h_labels)])
+new_header <- create_header(c(0.1, -0.1, 0.1, 0.2), risk_labels, options=new_options)
+
+# add box to new header
+last_graph_part <- add_box(new_header, 0, 1, 0.03, 3, 6, 0, 1, label='New Box', logscale=FALSE, b=2, 
+                           show_axis=TRUE, direction=favor_direction, userect=TRUE)
+last_graph_part$label_fun(expression(Omega), 1, 1, fontsize=20)
+last_graph_part$label_fun(expression(alpha), 2, 1, fontsize=20)
+last_graph_part$label_fun(expression(beta), 3, 1, fontsize=20)
+last_graph_part$label_fun(expression(gamma), 4, 1, fontsize=20) 
+
+plot_forest_tree(last_graph_part$box, 0.2, 0.8, 0.5, 1, 1, 1, col='black', height=NULL, userect=TRUE)
