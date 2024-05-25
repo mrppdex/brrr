@@ -162,7 +162,6 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
     
     current_y <- NULL
 
-    print(obj)
     options <- NULL
     if (obj$name=='header') {
         options <- obj$options
