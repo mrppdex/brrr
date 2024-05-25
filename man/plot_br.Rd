@@ -13,6 +13,7 @@ plot_br(
   neutral_pos = 3,
   num_ticks = 6,
   top_margin = NULL,
+  userect = FALSE,
   value_collapse = rep(FALSE, length(columns_specs))
 )
 }

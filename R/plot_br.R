@@ -37,14 +37,14 @@
 plot_br <- function(data, columns_specs, breaks_widths, 
                     split_axis_by_col, split_box_by_col, # data splitting
                     neutral_pos = 3, num_ticks = 6,
-                    top_margin = NULL,
+                    top_margin = NULL, userect = FALSE,
                     value_collapse=rep(FALSE, length(columns_specs))) {
 
   # make sure lengths are ok
   stopifnot(length(breaks_widths)==length(columns_specs))
 
   # new page
-  grid.newpage()
+  if (is.null(top_margin)) grid.newpage()
 
   # 1. CREATE HEADER
   options_br <- page_options$new()
@@ -129,7 +129,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
       for(k in 1:nrow(data_sub_subset)) {
         plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
                         data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
-                        col=NULL, br_palette=box$box$header$options$get_palette())
+                        userect=userect, col=NULL, br_palette=box$box$header$options$get_palette())
       }
     }  
 

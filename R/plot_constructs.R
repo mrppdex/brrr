@@ -61,7 +61,7 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
   height <- ifelse(is.null(height), (box$y_pos[n1+1] - box$y_pos[n1])/5, height)
 
   grid.rect(x = unit(xvec[1], 'npc'), y = unit(yvec, 'npc'), 
-            width = unit(abs(diff(xvec)), 'npc'), height = unit(height, 'npc'),
+            width = unit(diff(xvec), 'npc'), height = unit(height, 'npc'),
             just=c('left', 'center'),
             gp = gpar(lty = lty, lwd = lwd, col = col))
     
