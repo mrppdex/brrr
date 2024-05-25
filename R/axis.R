@@ -73,9 +73,6 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
     to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
 
-    # debug print from and to
-    cat("from = ", from, " to = ", to, "\n")
-
     axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
     # plot the line of length xlength at x = xpos, y = ypos
