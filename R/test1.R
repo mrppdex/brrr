@@ -10,7 +10,7 @@ library(grid)
 
 # create header
 breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
-columns_specs <- c('Benefits'='endpoint', 
+columns_specs <- c('Endpoints'='endpoint', 
               'Treatment\n(N=100)'='treatment', 
               'Placebo\n(N=100)'='placebo',
               'Comparison\nHR or Odds Ratio\n(95% CI)'='col3')
@@ -21,5 +21,6 @@ split_box_by_col <- 'endpoint'
 
 # load data and add column
 data(mock_data)
-part1_data <- plot_br(mock_data, columns_specs, breaks_widths, split_axis_by_col, split_box_by_col, top_margin=NULL, value_collapse=value_collapse)
+part1_data <- plot_br(mock_data, columns_specs, breaks_widths, split_axis_by_col, split_box_by_col, 
+                      neutral_pos = 2, num_ticks = 6, top_margin=NULL, value_collapse=value_collapse)
 
