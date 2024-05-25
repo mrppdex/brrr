@@ -113,7 +113,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             grid.text(label = ifelse(logscale, 
                                      format_log_ticks(axis_range[i], b), 
                                      as.character(axis_range[i])),
-                      x = tick_pos, y = ypos - 2 * tick_len, just = "top", 
+                      x = tick_pos, y = ypos - 2.5 * tick_len, just = "bottom", 
                       gp = gpar(fontsize = 12))
         }
 
