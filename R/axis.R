@@ -22,8 +22,28 @@
 #'
 #' @examples
 #' # Example usage:
-#' plot_axis(xlength = 0.8, xpos = 0.1, ypos = 0.1, from = 0, to = 10, n_ticks = 5,
-#'           neutral_pos = 3, label = "X-axis", logscale = FALSE, b = 10, show_axis = TRUE)
+#' grid.newpage()
+#' pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
+#'          from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
+#'
+#' # reversed axis
+#' pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4, 
+#'          from = 10, to = 0, b = 10, n_ticks = 6, neutral_pos = 1)
+#' 
+#' # logaritmic axis
+#' pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
+#'           from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, 
+#'           logscale = TRUE, label = "from=0.1 to 1000")
+#' 
+#' logarithmic reversed axis with label that has math expression
+#' pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
+#'           from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
+#'           logscale = TRUE, label = 'from=1000 to 0.1', show_axis=TRUE)
+#' 
+#' # another logaritmic axis
+#' pp_log_axis2 <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.1, 
+#'           from = 1.12, to = 99, b = 10, n_ticks = 6, neutral_pos = 1, 
+#'           logscale = TRUE, label = "from=1.12 to 99")
 #'
 #' @export
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
@@ -123,27 +143,3 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     ))
 }
 
-
-
-#grid.newpage()
-# pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.5, 
-#           from = 0, to = 10, b = 10, n_ticks = 6, neutral_pos = 1)
-
-# # reversed axis
-# pp_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.4, 
-#           from = 10, to = 0, b = 10, n_ticks = 6, neutral_pos = 1)
-
-# # logaritmic axis
-# pp_log_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.3, 
-#           from = 0.1, to = 1000, b = 10, n_ticks = 6, neutral_pos = 1, 
-#           logscale = TRUE, label = "from=0.1 to 1000")
-
-# logarithmic reversed axis with label that has math expression
-# pp_log_rev_axis <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.2, 
-#           from = 1000, to = 0.1, b = 10, n_ticks = 6, neutral_pos = 1, 
-#           logscale = TRUE, label = 'from=1000 to 0.1', show_axis=TRUE)
-
-# # another logaritmic axis
-# pp_log_axis2 <- plot_axis(xlength = 0.8, xpos = 0.5, ypos = 0.1, 
-#           from = 1.12, to = 99, b = 10, n_ticks = 6, neutral_pos = 1, 
-#           logscale = TRUE, label = "from=1.12 to 99")

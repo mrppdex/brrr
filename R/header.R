@@ -15,6 +15,7 @@ library(grid)
 #' @return The created header.
 #'
 #' @examples
+#' grid.newpage()
 #' create_header(c(1, 2, 3), c("A", "B", "C"))
 #' create_header(c(1, 2, 3), options = page_options$new())
 #'
@@ -69,6 +70,33 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
                 name = 'header'))
 }
 
+#' Add benefit arrows to the header
+#'
+#' This function adds benefit arrows to the header of a plot. The arrows indicate the direction
+#' of benefit, either favoring the last year (LY) or favoring the placebo. The arrows are drawn
+#' using the grid package.
+#'
+#' @param obj An object containing the plot parameters and options.
+#' @param neutral_relative_x The relative x-coordinate of the neutral position of the arrow.
+#' @param direction The direction of the arrows. Default is 'up'.
+#' @param labels The labels for the arrows. Default is c('Favors LY', 'Favors Placebo').
+#' @param col The color of the arrows. Default is '#043099'.
+#'
+#' @return None
+#'
+#' @examples
+#' # Create a plot object
+#' obj <- plot_object()
+#'
+#' # Add benefit arrows to the header
+#' add_benefit_arrows(obj, neutral_relative_x = 0.5, direction = 'up',
+#'                    labels = c('Favors LY', 'Favors Placebo'), col = '#043099')
+#'
+#' @export
+add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
+                                                             labels=c('Favors LY', 'Favors Placebo'), col='#043099') {
+    # Function code here
+}
 add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
                                labels=c('Favors LY', 'Favors Placebo'), col='#043099') {
     breaks <- obj$breaks
@@ -117,9 +145,3 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
               just = c('center', 'center'))
 }
 
-# # reset grid page
-# grid.newpage()
-
-# breaks_widths <- c(0.2, -0.1, 0.1)
-# my_header <- create_header(breaks_widths, c('Endpoint', 'Treatment', 'Dose'))
-# add_benefit_arrows(my_header, 0.7)
