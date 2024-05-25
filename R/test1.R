@@ -37,7 +37,8 @@ mock_data_risks <- data.frame(
   select(-se) %>%
   mutate(logscale = TRUE, logbase = 10) %>%
   mutate(estimator = 'Relative Risk (95% CI)') %>%
-  mutate(txt_val = sprintf("%.2f (%.2f, %.2f)", value, lower, upper))
+  mutate(txt_val = sprintf("%.2f (%.2f, %.2f)", value, lower, upper)) %>%
+  mutate(reversed = TRUE)
 
 
 breaks_width_risks <- c(0.2, -0.1, 0.1, 0.2)
