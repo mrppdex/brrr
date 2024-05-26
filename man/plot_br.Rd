@@ -9,6 +9,7 @@ plot_br(
   columns_specs,
   breaks_widths,
   split_axis_by_col,
+  axis_labels_col,
   split_box_by_col,
   neutral_pos = 3,
   num_ticks = 6,
@@ -27,6 +28,8 @@ plot_br(
 \item{breaks_widths}{A numeric vector specifying the widths of the breaks between the columns in the plot.}
 
 \item{split_axis_by_col}{A character string specifying the column name in the data frame to split the plot axis by.}
+
+\item{axis_labels_col}{A character string specifying the column name in the data frame to use as the axis labels.}
 
 \item{split_box_by_col}{A character string specifying the column name in the data frame to split the boxes within each axis by.}
 

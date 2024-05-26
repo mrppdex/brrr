@@ -4,12 +4,14 @@
 \alias{get_metadata}
 \title{Get metadata for a given dataset}
 \usage{
-get_metadata(data, split_axis_by_col, split_box_by_col)
+get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col)
 }
 \arguments{
 \item{data}{The dataset to calculate metadata for.}
 
 \item{split_axis_by_col}{The column to split the data by on the x-axis.}
+
+\item{axis_labels_col}{The column containing the axis labels.}
 
 \item{split_box_by_col}{The column to split the data by in each box.}
 }

@@ -5,6 +5,7 @@
 #'
 #' @param data The dataset to calculate metadata for.
 #' @param split_axis_by_col The column to split the data by on the x-axis.
+#' @param axis_labels_col The column containing the axis labels.
 #' @param split_box_by_col The column to split the data by in each box.
 #'
 #' @return A data frame containing the calculated metadata.
@@ -20,7 +21,7 @@
 #' }
 #'
 #' @export
-get_metadata <- function(data, split_axis_by_col, split_box_by_col) {
+get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_col) {
 
     if (!'reversed' %in% colnames(data)) {
         data$reversed <- FALSE
@@ -34,7 +35,7 @@ get_metadata <- function(data, split_axis_by_col, split_box_by_col) {
         group_by_at(c({{split_box_by_col}}, {{split_axis_by_col}})) %>%
         mutate(nsubcats = n()) %>%
         ungroup() %>%
-        select(any_of(c(split_axis_by_col, split_box_by_col, 'ncats', 'nsubcats', 'minval', 'maxval', 'reversed', 'logscale', 'logbase'))) %>%
+        select(any_of(c(split_axis_by_col, axis_labels_col, split_box_by_col, 'ncats', 'nsubcats', 'minval', 'maxval', 'reversed', 'logscale', 'logbase'))) %>%
         distinct()
     
     return(mock_data_meta)

@@ -6,6 +6,7 @@
 #' @param columns_specs A character named vector specifying the column names in the data frame that correspond to the different columns in the plot.
 #' @param breaks_widths A numeric vector specifying the widths of the breaks between the columns in the plot.
 #' @param split_axis_by_col A character string specifying the column name in the data frame to split the plot axis by.
+#' @param axis_labels_col A character string specifying the column name in the data frame to use as the axis labels.
 #' @param split_box_by_col A character string specifying the column name in the data frame to split the boxes within each axis by.
 #' @param neutral_pos A numeric value specifying the neutral position of the plot.
 #' @param num_ticks An optional numeric value specifying the number of ticks on the plot axis.
@@ -38,7 +39,7 @@
 #' 
 #' @export
 plot_br <- function(data, columns_specs, breaks_widths, 
-                    split_axis_by_col, split_box_by_col, # data splitting
+                    split_axis_by_col, axis_labels_col, split_box_by_col, # data splitting
                     neutral_pos = 3, num_ticks = 6,
                     top_margin = NULL, userect = FALSE,
                     arrow_labels = c('Favors\nTreatment', 'Favors\nPlacebo'),
@@ -58,7 +59,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
   header_br <- create_header(breaks_widths, names(columns_specs), options=options_br)
 
   # 2. ADD BOXES
-  data_meta <- get_metadata(data, split_axis_by_col, split_box_by_col)
+  data_meta <- get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col)
 
   # remember last added graph part
   last_graph_part <- header_br
@@ -86,10 +87,12 @@ plot_br <- function(data, columns_specs, breaks_widths,
     is_reversed <- ifelse('reversed' %in% colnames(data_meta_subset),
                           any(data_meta_subset$reversed), FALSE)
 
+    axis_label <- data_meta_subset[[axis_labels_col]][1]
+
     last_graph_part <- add_box( last_graph_part, spacing, ncats, 
                                 unit(10, 'mm'), neutral_pos, num_ticks, 
                                 ifelse(is_reversed, maxval, minval), 
-                                ifelse(is_reversed, minval, maxval), label=est, 
+                                ifelse(is_reversed, minval, maxval), label=axis_label, 
                                 logscale=(!is.na(logscale) & logscale), 
                                 b=ifelse(is.na(logbase), 2, logbase), 
                                 arrow_labels = arrow_labels,
