@@ -10,6 +10,10 @@
 #' @field HEADER_HEIGHT The height of the header.
 #' @field HEADER_WIDTH The width of the header.
 #' @field row.label.font.size The font size of the row labels.
+#' @field header.label.font.size The font size of the header labels.
+#' @field axis.label.font.size The font size of the axis labels.
+#' @field axis.ticks.font.size The font size of the axis ticks.
+#' @field box.spacing The spacing between boxes.
 #' @field br_palette The color palette for the page.
 #' 
 #' @format An object of class \code{page_options}
@@ -26,7 +30,11 @@ page_options <- R6Class("page_options",
                             br_palette = c("black", "rebeccapurple" = "#663399", "cornflowerblue" = "#6495ED", 
                                            "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
                                            "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A"),
-                            row.label.font.size = 10,
+                            row.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            header.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            axis.label.font.size = convertUnit(unit(4, 'mm'), 'points', valueOnly=TRUE),
+                            axis.ticks.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            box.spacing = convertUnit(unit(15, 'mm'), 'npc', valueOnly=TRUE),
                             #' @description Initialize the page options.
                             #' @param PAGE_TOP_MARGIN The top margin of the page.
                             #' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.
@@ -37,7 +45,8 @@ page_options <- R6Class("page_options",
                                                   PAGE_BOTTOM_MARGIN = 0.05,
                                                   PAGE_LEFT_MARGIN = 0.05,
                                                   PAGE_RIGHT_MARGIN = 0.05,
-                                                  HEADER_HEIGHT = 0.05) {
+                                                  HEADER_HEIGHT = convertY(unit(13, 'mm'), unitTo='npc', valueOnly=TRUE)
+                                                 ) {
                                 self$PAGE_TOP_MARGIN <- PAGE_TOP_MARGIN
                                 self$PAGE_BOTTOM_MARGIN <- PAGE_BOTTOM_MARGIN
                                 self$PAGE_LEFT_MARGIN <- PAGE_LEFT_MARGIN
@@ -91,6 +100,48 @@ page_options <- R6Class("page_options",
                             #' @return None
                             set_label_font_size = function(size) {
                                 self$row.label.font.size <- size
+                            },
+                            #' @description Get the font size of the header labels.
+                            #' @return The font size of the header labels.
+                            get_header_font_size = function() {
+                                return(self$header.label.font.size)
+                            },
+                            #' @description Set the font size of the header labels.
+                            #' @param size The font size to set.
+                            #' @return None
+                            set_header_font_size = function(size) {
+                                self$header.label.font.size <- size
+                            },
+                            #' @description Get the font size of the axis labels.
+                            #' @return The font size of the axis labels.
+                            get_axis_label_font_size = function() {
+                                return(self$axis.label.font.size)
+                            },
+                            #' @description Set the font size of the axis labels.
+                            #' @param size The font size to set.
+                            set_axis_label_fong_size = function(size) {
+                                self$axis.label.font.size <- size
+                            },
+                            #' @description Get the font size of the axis ticks.
+                            #' @return The font size of the axis ticks.
+                            get_axis_ticks_font_size = function() {
+                                return(self$axis.ticks.font.size)
+                            },
+                            #' @description Set the font size of the axis ticks.
+                            #' @param size The font size to set.
+                            set_axis_ticks_font_size = function(size) {
+                                self$axis.ticks.font.size <- size
+                            },
+                            #' @description Get the box spacing.
+                            #' @return The box spacing.
+                            get_box_spacing = function() {
+                                return(self$box.spacing)
+                            },
+                            #' @description Set the box spacing.
+                            #' @param spacing The spacing to set.
+                            #' @return None
+                            set_box_spacing = function(spacing) {
+                                self$box.spacing <- spacing
                             }
                         )
 )
