@@ -77,23 +77,43 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
     axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
-    # plot the line of length xlength at x = xpos, y = ypos
-    # when length + xpos > 1, the line is cut at PAGE_RIGHT_MARGIN
-    # if (xpos + xlength > 1) {
-    #     xlength <- 1 - xpos - PAGE_RIGHT_MARGIN
-    # }
-
+    scale_function <- function(x) {
+        if (logscale) {
+            return(x = xpos + xlength * (log(x, base = b) - from) / (to - from))
+        } else {
+            return(x = xpos + xlength * (x - from) / (to - from))
+        }
+    }
+    
     # set the length of the ticks
     tick_len <- 0.02 * xlength
 
 
     if (show_axis) {
+        # plot the axis
         grid.lines(x = c(xpos, xpos + xlength), y = c(ypos, ypos), gp = gpar(lwd = 1))
 
         # plot the ticks
         for (i in 1:length(axis_range)) {
             tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
             grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len, ypos), gp = gpar(lwd = 1))
+        }
+
+        # plot small ticks if logscale
+        if(logscale) {
+            seq_direction <- ifelse(from < to, 1, -1)
+
+            ticks_small <- NULL
+            if (seq_direction==1) {
+                ticks_small <- unique(rep(b^seq(from, to+1, by=seq_direction), each=b)*(1:b))
+            } else {
+                ticks_small <- unique(rep(b^seq(from-1, to, by=seq_direction), each=b)*(1:b))
+            }
+            
+            for (i in 1:length(ticks_small)) {
+                tick_pos <- scale_function(ticks_small[i])
+                grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len/2, ypos), gp = gpar(lwd = 1))
+            }
         }
 
         format_log_ticks <- function(x, b) {
@@ -142,16 +162,13 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     # 
 
     return(list(
-      axis_function = function(x) {
-        if (logscale) {
-            return(x = xpos + xlength * (log(x, base = b) - from) / (to - from))
-        } else {
-            return(x = xpos + xlength * (x - from) / (to - from))
-        }
-      },
+      axis_function = scale_function,
       from = from,
       to = to,
       length = xlength
     ))
 }
 
+# grid.newpage()
+# pp_lin_axis <- plot_axis(xlength = 0.8, xpos = 0.1, ypos = 0.5, 
+#          from = 10^-5, to = 10, b = 10, n_ticks = 6, neutral_pos = 2, logscale = TRUE)
