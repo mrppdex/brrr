@@ -1,7 +1,39 @@
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
+# brrr
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of brrr is to …
+
+## Installation
+
+You can install the development version of brrr from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("mrppdex/brrr")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem:
+
+``` r
+library(brrr)
 library(tidyr)
 library(dplyr)
+#> 
+#> Attaching package: 'dplyr'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     filter, lag
+#> The following objects are masked from 'package:base':
+#> 
+#>     intersect, setdiff, setequal, union
 library(grid)
 
 data(mock_data)
@@ -9,9 +41,9 @@ data(mock_data)
 # create benefits header
 breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
 columns_specs <- c('Benefit'='endpoint', 
-              'Treatment\n(N=100)'='treatment', 
-              'Placebo\n(N=100)'='placebo',
-              'Comparison\nHR or Odds Ratio\n(95% CI)'='col3')
+                   'Treatment\n(N=100)'='treatment', 
+                   'Placebo\n(N=100)'='placebo',
+                   'Comparison\nHR or Odds Ratio\n(95% CI)'='col3')
 value_collapse <- c(TRUE, FALSE, FALSE, FALSE)
 
 split_axis_by_col <- 'estimator'
@@ -29,9 +61,9 @@ data(mock_data_risks)
 breaks_width_risks <- c(0.2, -0.1, 0.1, 0.2)
 
 columns_specs_risks <- c('Risk'='endpoint', 
-              'Treatment\n(N=100)'='treatment', 
-              'Placebo\n(N=100)'='placebo',
-              'Comparison\nRisk Ratio\n(95% CI)'='txt_val')
+                         'Treatment\n(N=100)'='treatment', 
+                        'Placebo\n(N=100)'='placebo',
+                        'Comparison\nRisk Ratio\n(95% CI)'='txt_val')
 
 value_collapse_risks <- c(FALSE, FALSE, FALSE, FALSE)
 
@@ -46,3 +78,6 @@ part2_data <- plot_br(mock_data_risks, columns_specs_risks, breaks_width_risks,
                       neutral_pos = 2, num_ticks = 6, 
                       top_margin=1-part1_data$last_y+0.05, value_collapse=value_collapse_risks,
                       options_br=risks_options)
+```
+
+<img src="man/figures/README-example-1.png" width="100%" />
