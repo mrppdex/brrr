@@ -100,16 +100,16 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
         }
 
         # plot small ticks if logscale
-        if(logscale) {
+        if(logscale & b==10) {
             seq_direction <- ifelse(from < to, 1, -1)
 
             ticks_small <- NULL
             if (seq_direction==1) {
-                ticks_small <- unique(rep(b^seq(from, to+1, by=seq_direction), each=b)*(1:b))
+                ticks_small <- b^from + cumsum(rep(diff(b^axis_range)/10, each=10))
             } else {
-                ticks_small <- unique(rep(b^seq(from-1, to, by=seq_direction), each=b)*(1:b))
+                ticks_small <- rev(b^from + cumsum(rep(diff(b^axis_range)/10, each=10)))
             }
-            
+
             for (i in 1:length(ticks_small)) {
                 tick_pos <- scale_function(ticks_small[i])
                 grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len/2, ypos), gp = gpar(lwd = 1))
