@@ -32,6 +32,14 @@ It includes properties for the page margins, header height, and color palette.
 
 \item{\code{row.label.font.size}}{The font size of the row labels.}
 
+\item{\code{header.label.font.size}}{The font size of the header labels.}
+
+\item{\code{axis.label.font.size}}{The font size of the axis labels.}
+
+\item{\code{axis.ticks.font.size}}{The font size of the axis ticks.}
+
+\item{\code{box.spacing}}{The spacing between boxes.}
+
 \item{\code{br_palette}}{The color palette for the page.}
 }
 \if{html}{\out{</div>}}
@@ -47,6 +55,14 @@ It includes properties for the page margins, header height, and color palette.
 \item \href{#method-page_options-set_page_parameter}{\code{page_options$set_page_parameter()}}
 \item \href{#method-page_options-get_label_font_size}{\code{page_options$get_label_font_size()}}
 \item \href{#method-page_options-set_label_font_size}{\code{page_options$set_label_font_size()}}
+\item \href{#method-page_options-get_header_font_size}{\code{page_options$get_header_font_size()}}
+\item \href{#method-page_options-set_header_font_size}{\code{page_options$set_header_font_size()}}
+\item \href{#method-page_options-get_axis_label_font_size}{\code{page_options$get_axis_label_font_size()}}
+\item \href{#method-page_options-set_axis_label_fong_size}{\code{page_options$set_axis_label_fong_size()}}
+\item \href{#method-page_options-get_axis_ticks_font_size}{\code{page_options$get_axis_ticks_font_size()}}
+\item \href{#method-page_options-set_axis_ticks_font_size}{\code{page_options$set_axis_ticks_font_size()}}
+\item \href{#method-page_options-get_box_spacing}{\code{page_options$get_box_spacing()}}
+\item \href{#method-page_options-set_box_spacing}{\code{page_options$set_box_spacing()}}
 \item \href{#method-page_options-clone}{\code{page_options$clone()}}
 }
 }
@@ -61,7 +77,7 @@ Initialize the page options.
   PAGE_BOTTOM_MARGIN = 0.05,
   PAGE_LEFT_MARGIN = 0.05,
   PAGE_RIGHT_MARGIN = 0.05,
-  HEADER_HEIGHT = 0.05
+  HEADER_HEIGHT = convertY(unit(13, "mm"), unitTo = "npc", valueOnly = TRUE)
 )}\if{html}{\out{</div>}}
 }
 
@@ -189,6 +205,132 @@ Set the font size of the row labels.
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{size}}{The font size to set.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-get_header_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_header_font_size}{}}}
+\subsection{Method \code{get_header_font_size()}}{
+Get the font size of the header labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_header_font_size()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The font size of the header labels.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-set_header_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_header_font_size}{}}}
+\subsection{Method \code{set_header_font_size()}}{
+Set the font size of the header labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_header_font_size(size)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{The font size to set.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-get_axis_label_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_axis_label_font_size}{}}}
+\subsection{Method \code{get_axis_label_font_size()}}{
+Get the font size of the axis labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_axis_label_font_size()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The font size of the axis labels.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-set_axis_label_fong_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_axis_label_fong_size}{}}}
+\subsection{Method \code{set_axis_label_fong_size()}}{
+Set the font size of the axis labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_label_fong_size(size)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{The font size to set.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-get_axis_ticks_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_axis_ticks_font_size}{}}}
+\subsection{Method \code{get_axis_ticks_font_size()}}{
+Get the font size of the axis ticks.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_axis_ticks_font_size()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The font size of the axis ticks.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-set_axis_ticks_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_axis_ticks_font_size}{}}}
+\subsection{Method \code{set_axis_ticks_font_size()}}{
+Set the font size of the axis ticks.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_ticks_font_size(size)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{The font size to set.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-get_box_spacing"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_box_spacing}{}}}
+\subsection{Method \code{get_box_spacing()}}{
+Get the box spacing.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_box_spacing()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The box spacing.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-set_box_spacing"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_box_spacing}{}}}
+\subsection{Method \code{set_box_spacing()}}{
+Set the box spacing.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_box_spacing(spacing)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{spacing}}{The spacing to set.}
 }
 \if{html}{\out{</div>}}
 }

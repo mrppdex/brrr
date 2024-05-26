@@ -17,7 +17,8 @@ plot_box(
   label = NULL,
   logscale = FALSE,
   b = 10,
-  show_axis = TRUE
+  show_axis = TRUE,
+  options = page_options$new()
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ plot_box(
 \item{b}{The base for logarithmic scale.}
 
 \item{show_axis}{Logical value indicating whether to show the axis.}
+
+\item{options}{The page options object.}
 }
 \value{
 A list containing the following elements:
