@@ -87,16 +87,16 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
 #' plot_dot(box = my_box, x = 0.5, n1 = 10, n2 = 2, N2 = 20, pch = 19, size = unit(1, 'char'), 
 #'          col = 'black')
 #' }
-plot_dot <- function(box, x, n1, n2=1, N2=1, pch=19, size=unit(1, 'char'), col='black') {
+plot_dot <- function(box, x, n1, n2=1, N2=1, pch=21, size=unit(1, 'char'), col='black') {
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
   yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
   
   if (N2>1) {
-    pch <- 15 + (n2-1) %% 6
+    pch <- 21 + (n2-1) %% 6
   }
 
   grid.points(x = unit(xvec, 'npc'), y = unit(yvec, 'npc'),
-        pch=pch, size=size, gp = gpar(col = col))
+        pch=pch, size=size, gp = gpar(col = col, fill = col))
   
 }
 
