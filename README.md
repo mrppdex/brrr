@@ -4,6 +4,11 @@
 # brrr
 
 <!-- badges: start -->
+
+``` r
+usethis::use_lifecycle_badge("experimental")
+```
+
 <!-- badges: end -->
 
 The goal of brrr is to …
