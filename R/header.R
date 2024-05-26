@@ -123,10 +123,12 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     # use grid to draw an arrow from x with length distance_to_breaks to the right and left
     # y is 90% of the header height
 
+    b_arrow <- arrow(type="closed", angle=10, length=unit(0.02, "npc"))
+
     # left arrow
     grid.lines(x = c(x + 0.01, x + distance_to_breaks), 
                y = c(1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.9, 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.9),
-               arrow=arrow(type="closed", length=unit(0.01, "npc")), 
+               arrow=b_arrow, 
                gp = gpar(fill =  col, col = col)) 
 
     # draw text above the arrow
@@ -138,7 +140,7 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     # right arrow
     grid.lines(x = c(x - 0.01, x - distance_to_breaks),
                 y = c(1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.9, 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.9),
-                arrow=arrow(type="closed", length=unit(0.1, "inches")), 
+                arrow=b_arrow, 
                 gp = gpar(fill = col, col = col)) 
 
     grid.text(label = ifelse(direction=='up', labels[2], labels[1]),

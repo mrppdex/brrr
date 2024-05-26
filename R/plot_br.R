@@ -11,7 +11,9 @@
 #' @param num_ticks An optional numeric value specifying the number of ticks on the plot axis.
 #' @param top_margin An optional numeric value specifying the top margin of the plot.
 #' @param userect A logical value specifying whether to use rectangles in the plot.
+#' @param arrow_labels A character vector specifying the labels for the arrows in the plot.
 #' @param value_collapse A logical vector specifying whether to collapse the values within each column/row.
+#' @param options_br An optional page_options object specifying the options for the plot.
 #'
 #' @return A list containing the boxes in the plot and the last y-position of the plot.
 #'
@@ -39,7 +41,9 @@ plot_br <- function(data, columns_specs, breaks_widths,
                     split_axis_by_col, split_box_by_col, # data splitting
                     neutral_pos = 3, num_ticks = 6,
                     top_margin = NULL, userect = FALSE,
-                    value_collapse=rep(FALSE, length(columns_specs))) {
+                    arrow_labels = c('Favors\nTreatment', 'Favors\nPlacebo'),
+                    value_collapse=rep(FALSE, length(columns_specs)),
+                    options_br = page_options$new()) {
 
   # make sure lengths are ok
   stopifnot(length(breaks_widths)==length(columns_specs))
@@ -48,7 +52,6 @@ plot_br <- function(data, columns_specs, breaks_widths,
   if (is.null(top_margin)) grid.newpage()
 
   # 1. CREATE HEADER
-  options_br <- page_options$new()
   if (!is.null(top_margin)) {
     options_br$set_page_parameter('PAGE_TOP_MARGIN', top_margin)
   }
@@ -87,6 +90,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
                                         ifelse(is_reversed, minval, maxval), label=est, 
                                         logscale=(!is.na(logscale) & logscale), 
                                         b=ifelse(is.na(logbase), 2, logbase), 
+                                        arrow_labels = arrow_labels,
                                         show_axis=TRUE)
 
     boxes[[est]] <- list(box=last_graph_part)

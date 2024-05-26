@@ -9,6 +9,7 @@
 #' @field PAGE_RIGHT_MARGIN The right margin of the page.
 #' @field HEADER_HEIGHT The height of the header.
 #' @field HEADER_WIDTH The width of the header.
+#' @field row.label.font.size The font size of the row labels.
 #' @field br_palette The color palette for the page.
 #' 
 #' @format An object of class \code{page_options}
@@ -25,6 +26,7 @@ page_options <- R6Class("page_options",
                             br_palette = c("black", "rebeccapurple" = "#663399", "cornflowerblue" = "#6495ED", 
                                            "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
                                            "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A"),
+                            row.label.font.size = 10,
                             #' @description Initialize the page options.
                             #' @param PAGE_TOP_MARGIN The top margin of the page.
                             #' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.
@@ -78,6 +80,17 @@ page_options <- R6Class("page_options",
                                 } else {
                                     stop(paste0('Parameter ', parameter, ' is not defined.'))
                                 }
+                            },
+                            #' @description Get the font size of the row labels.
+                            #' @return The font size of the row labels.
+                            get_label_font_size = function() {
+                                return(self$row.label.font.size)
+                            },
+                            #' @description Set the font size of the row labels.
+                            #' @param size The font size to set.
+                            #' @return None
+                            set_label_font_size = function(size) {
+                                self$row.label.font.size <- size
                             }
                         )
 )

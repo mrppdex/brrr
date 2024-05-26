@@ -85,6 +85,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @param logscale Whether to use a logarithmic scale for the box (default is FALSE).
 #' @param b The base for the logarithmic scale (default is 10).
 #' @param show_axis Whether to show the axis for the box (default is TRUE).
+#' @param arrow_labels The labels for the benefit arrows (default is NULL).
 #' @param direction The direction of the benefit arrows (default is 'up').
 #' @param userect Whether to use a rectangle for the box (default is FALSE).
 #'
@@ -158,7 +159,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @export
 add_box <- function(obj, spacing, n_categories, single_category_height, 
                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                    show_axis=TRUE, direction='up', userect=FALSE) {
+                    show_axis=TRUE, arrow_labels = NULL, direction='up', userect=FALSE) {
     
     current_y <- NULL
 
@@ -179,7 +180,13 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
         current_y <- 1 - (HEADER_HEIGHT + PAGE_TOP_MARGIN) - spacing
         
         # add benefit arrows
-        add_benefit_arrows(header, neutral_pos/n_ticks, direction=direction)
+        if(!is.null(arrow_labels) & length(arrow_labels)==2) {
+            add_benefit_arrows(header, neutral_pos/n_ticks, direction=direction, labels=arrow_labels)
+        } else if(!is.null(arrow_labels) & length(arrow_labels)!=2) {
+            stop('The length of arrow_labels must be 2')
+        } else if(is.null(arrow_labels)) {
+            add_benefit_arrows(header, neutral_pos/n_ticks, direction=direction)
+        }
 
     } else if (!is.null(obj$name) & obj$name == 'box') {
         header <- obj$header
@@ -205,8 +212,11 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
 
     # all labels
     add_label <- function(label, collevel, rowlevel, n=1, N=1, 
-                          fontsize=10, fontface='bold', col='black', isglobal=FALSE) 
+                          fontsize=NULL, fontface='bold', col='black', isglobal=FALSE) 
     {
+        if (is.null(fontsize)) {
+            fontsize <- options$get_label_font_size()
+        }
 
         y_pos <- box1$y_pos
 
