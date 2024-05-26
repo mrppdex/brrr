@@ -30,6 +30,8 @@ It includes properties for the page margins, header height, and color palette.
 
 \item{\code{HEADER_WIDTH}}{The width of the header.}
 
+\item{\code{row.label.font.size}}{The font size of the row labels.}
+
 \item{\code{br_palette}}{The color palette for the page.}
 }
 \if{html}{\out{</div>}}
@@ -43,6 +45,8 @@ It includes properties for the page margins, header height, and color palette.
 \item \href{#method-page_options-get_page_parameters}{\code{page_options$get_page_parameters()}}
 \item \href{#method-page_options-get_page_parameter}{\code{page_options$get_page_parameter()}}
 \item \href{#method-page_options-set_page_parameter}{\code{page_options$set_page_parameter()}}
+\item \href{#method-page_options-get_label_font_size}{\code{page_options$get_label_font_size()}}
+\item \href{#method-page_options-set_label_font_size}{\code{page_options$set_label_font_size()}}
 \item \href{#method-page_options-clone}{\code{page_options$clone()}}
 }
 }
@@ -157,6 +161,39 @@ Set a specific page parameter.
 \item{\code{value}}{The value to set.}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-get_label_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_label_font_size}{}}}
+\subsection{Method \code{get_label_font_size()}}{
+Get the font size of the row labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_label_font_size()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+The font size of the row labels.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-page_options-set_label_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_label_font_size}{}}}
+\subsection{Method \code{set_label_font_size()}}{
+Set the font size of the row labels.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_label_font_size(size)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{size}}{The font size to set.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+None
 }
 }
 \if{html}{\out{<hr>}}

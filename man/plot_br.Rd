@@ -14,7 +14,9 @@ plot_br(
   num_ticks = 6,
   top_margin = NULL,
   userect = FALSE,
-  value_collapse = rep(FALSE, length(columns_specs))
+  arrow_labels = c("Favors\\nTreatment", "Favors\\nPlacebo"),
+  value_collapse = rep(FALSE, length(columns_specs)),
+  options_br = page_options$new()
 )
 }
 \arguments{
@@ -36,7 +38,11 @@ plot_br(
 
 \item{userect}{A logical value specifying whether to use rectangles in the plot.}
 
+\item{arrow_labels}{A character vector specifying the labels for the arrows in the plot.}
+
 \item{value_collapse}{A logical vector specifying whether to collapse the values within each column/row.}
+
+\item{options_br}{An optional page_options object specifying the options for the plot.}
 }
 \value{
 A list containing the boxes in the plot and the last y-position of the plot.

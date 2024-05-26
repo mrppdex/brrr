@@ -17,6 +17,7 @@ add_box(
   logscale = FALSE,
   b = 10,
   show_axis = TRUE,
+  arrow_labels = NULL,
   direction = "up",
   userect = FALSE
 )
@@ -45,6 +46,8 @@ add_box(
 \item{b}{The base for the logarithmic scale (default is 10).}
 
 \item{show_axis}{Whether to show the axis for the box (default is TRUE).}
+
+\item{arrow_labels}{The labels for the benefit arrows (default is NULL).}
 
 \item{direction}{The direction of the benefit arrows (default is 'up').}
 
