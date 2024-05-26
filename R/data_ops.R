@@ -20,6 +20,7 @@
 #' get_metadata(data, x, category)
 #' }
 #'
+#' @import dplyr
 #' @export
 get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_col) {
 
