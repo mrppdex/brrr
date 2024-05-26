@@ -39,10 +39,11 @@ split_axis_by_col <- 'estimator'
 split_box_by_col <- 'endpoint'
 
 risks_options <- page_options$new()
-risks_options$set_label_font_size(12)
+label_font_size <- risks_options$get_label_font_size()*1.2
+risks_options$set_label_font_size(label_font_size)
 
 part2_data <- plot_br(mock_data_risks, columns_specs_risks, breaks_width_risks,
                       split_axis_by_col, split_box_by_col, userect=TRUE,
                       neutral_pos = 2, num_ticks = 6, 
-                      top_margin=1-part1_data$last_y+0.05, value_collapse=value_collapse_risks,
+                      top_margin=1-part1_data$last_y-0.05, value_collapse=value_collapse_risks,
                       options_br=risks_options)

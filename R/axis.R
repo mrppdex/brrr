@@ -13,6 +13,7 @@
 #' @param logscale Logical value indicating whether to use logarithmic scale.
 #' @param b The base for logarithmic scale.
 #' @param show_axis Logical value indicating whether to show the axis.
+#' @param options The page options object.
 #'
 #' @return A list containing the following elements:
 #'   - axis_function: A function that scales a value to the position on the axis.
@@ -49,7 +50,8 @@
 #'
 #' @export
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
-                      label=NULL, logscale=FALSE, b = 10, show_axis=TRUE) {
+                      label=NULL, logscale=FALSE, b = 10, show_axis=TRUE, 
+                      options=page_options$new()) {
     
     # when logscale is TRUE stop if from or to is <= 0
     if (logscale && (from <= 0 || to <= 0)) {
@@ -107,20 +109,31 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             }
         }
 
-        # add the labels
+        axis_label_font_size <- options$get_axis_label_font_size()
+        axis_label_height <- convertHeight(unit(axis_label_font_size, 'points'),
+                                           unitTo='npc', valueOnly = TRUE)
+
+        axis_ticks_font_size <- options$get_axis_ticks_font_size()
+        axis_ticks_label_height <- convertHeight(unit(axis_ticks_font_size, 'points'),
+                                          unitTo='npc', valueOnly = TRUE)
+
+        # add the ticks labels
         for (i in 1:length(axis_range)) {
             tick_pos <- xpos + xlength * (axis_range[i] - from) / (to - from)
             grid.text(label = ifelse(logscale, 
                                      format_log_ticks(axis_range[i], b), 
                                      as.character(axis_range[i])),
-                      x = tick_pos, y = ypos - 2.5 * tick_len, just = "bottom", 
-                      gp = gpar(fontsize = 12))
+                      x = tick_pos, 
+                      y = unit(ypos - 1.5*tick_len - axis_ticks_label_height, 'npc'),
+                      just = "bottom", 
+                      gp = gpar(fontsize = axis_label_font_size))
         }
 
-        # add the label
+        # add the axis label
         if (!is.null(label)) {
-            grid.text(label = label, x = xpos + xlength / 2, y = ypos - 4 * tick_len, just = "top", 
-                    gp = gpar(fontsize = 12, fontface = "bold"))
+            grid.text(label = label, x = xpos + xlength / 2, 
+                    y =  unit(ypos - 2*tick_len - axis_ticks_label_height - axis_label_height, 'npc'), 
+                    just = "bottom", gp = gpar(fontsize = axis_label_font_size, fontface = "bold"))
         }
     }
 

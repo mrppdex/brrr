@@ -61,7 +61,8 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
       grid.text(label = labels[i], 
                 x = PAGE_LEFT_MARGIN+HEADER_WIDTH*(actual_breaks[i] + actual_breaks[i+1])/2, 
                 y = 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT/2,
-                just = c('center', 'center'))
+                just = c('center', 'center'),
+                gp = gpar(fontsize = options$get_header_font_size()))
     }
   }
 
@@ -98,13 +99,16 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
 #'
 #' @export
 add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
-                               labels=c('Favors LY', 'Favors Placebo'), col='#043099') {
+                               labels=c('Favors LY', 'Favors Placebo'), 
+                               col='#043099') {
     breaks <- obj$breaks
 
     HEADER_HEIGHT <- obj$options$get_page_parameter('HEADER_HEIGHT')
     PAGE_TOP_MARGIN <- obj$options$get_page_parameter('PAGE_TOP_MARGIN')
     PAGE_LEFT_MARGIN <- obj$options$get_page_parameter('PAGE_LEFT_MARGIN')
     HEADER_WIDTH <- obj$options$get_page_parameter('HEADER_WIDTH')
+
+    label_font_size <- obj$options$get_header_font_size()
 
     # last two elements of breaks
     last_breaks <- breaks[(length(breaks)-1):length(breaks)]
@@ -135,7 +139,7 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     grid.text(label = ifelse(direction=='up', labels[1], labels[2]), 
               x = unit(x + distance_to_breaks/2, 'npc'), 
               y = unit(1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.5, 'npc'),
-              just = c('center', 'center'))
+              just = c('center', 'center'), gp = gpar(fontsize = label_font_size))
 
     # right arrow
     grid.lines(x = c(x - 0.01, x - distance_to_breaks),
@@ -146,6 +150,6 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     grid.text(label = ifelse(direction=='up', labels[2], labels[1]),
               x = x - distance_to_breaks/2, 
               y = 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.5,
-              just = c('center', 'center'))
+              just = c('center', 'center'), gp = gpar(fontsize = label_font_size))
 }
 

@@ -80,18 +80,20 @@ plot_br <- function(data, columns_specs, breaks_widths,
                        unique(data_meta_subset$logbase, na.rm = TRUE)[1],
                        2)
 
-    spacing <- ifelse(last_graph_part$name=='header', 0, 0.05)
+    spacing <- ifelse(last_graph_part$name=='header', 0, 
+                      options_br$get_box_spacing())
 
     is_reversed <- ifelse('reversed' %in% colnames(data_meta_subset),
                           any(data_meta_subset$reversed), FALSE)
 
-    last_graph_part <- add_box(last_graph_part, spacing, ncats, 0.03, neutral_pos, num_ticks, 
-                                        ifelse(is_reversed, maxval, minval), 
-                                        ifelse(is_reversed, minval, maxval), label=est, 
-                                        logscale=(!is.na(logscale) & logscale), 
-                                        b=ifelse(is.na(logbase), 2, logbase), 
-                                        arrow_labels = arrow_labels,
-                                        show_axis=TRUE)
+    last_graph_part <- add_box( last_graph_part, spacing, ncats, 
+                                unit(10, 'mm'), neutral_pos, num_ticks, 
+                                ifelse(is_reversed, maxval, minval), 
+                                ifelse(is_reversed, minval, maxval), label=est, 
+                                logscale=(!is.na(logscale) & logscale), 
+                                b=ifelse(is.na(logbase), 2, logbase), 
+                                arrow_labels = arrow_labels,
+                                show_axis=TRUE)
 
     boxes[[est]] <- list(box=last_graph_part)
   }

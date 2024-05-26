@@ -17,6 +17,7 @@
 #' @param logscale Logical value indicating whether to use logarithmic scale.
 #' @param b The base for logarithmic scale.
 #' @param show_axis Logical value indicating whether to show the axis.
+#' @param options The page options object.
 #'
 #' @return A list containing the following elements:
 #'  - axis: The axis of the box.
@@ -35,12 +36,21 @@
 #' }
 plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height, 
                      neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                     show_axis=TRUE) {
+                     show_axis=TRUE, options=page_options$new()) {
 
+    # check if single_category_height unit is mm.
+    # If true, convert it to npc
+    if (is.unit(single_category_height)) { 
+        single_category_height <- convertY(single_category_height, unitTo='npc', valueOnly = TRUE)
+    } else {
+        single_category_height <- as.numeric(single_category_height)
+    }
+    
     box_height <- n_categories * single_category_height
 
     # plot the xaxis
-    axis <- plot_axis(xlength, xpos, ypos - box_height, from, to, n_ticks, neutral_pos, label, logscale, b, show_axis)
+    axis <- plot_axis(xlength, xpos, ypos - box_height, from, to, n_ticks, neutral_pos, 
+                      label, logscale, b, show_axis, options=options)
 
     # plot the box
     grid.rect(x = xpos, y = ypos, width = axis$length, height = box_height, 
@@ -200,7 +210,7 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
 
     # create a box
     box1 <- plot_box(global_box_x, current_y, global_box_width, n_categories, single_category_height, 
-                     neutral_pos, n_ticks, from, to, label, logscale, b, show_axis)
+                     neutral_pos, n_ticks, from, to, label, logscale, b, show_axis, options=options)
 
 
     # read header$breaks_position discard two last elements
