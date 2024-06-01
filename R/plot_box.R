@@ -54,7 +54,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 
     # plot the box
     grid.rect(x = xpos, y = ypos, width = axis$length, height = box_height, 
-              just = c('left', 'top'), gp = gpar(fill = "#ded8db43", lty = 1, lwd = 1))
+              just = c('left', 'top'), gp = gpar(fill = options$box.fill.color, lty = 1, lwd = 1))
 
     # separate each category with a faint vertical line across the whole
     # width of the box

@@ -113,7 +113,7 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=21, size=unit(1, 'char'), col='
 #' @param n2 The n2 parameter (default is 1).
 #' @param N2 The N2 parameter (default is 1).
 #' @param col The color of the forest tree (default is '#663399').
-#' @param br_palette The color palette to use (default is page_options$get_palette()).
+#' @param options The color palette to use (default is page_options$new()).
 #' @param userect The userect parameter (default is FALSE).
 #' @param height The height of the rectangle, used when userect is TRUE. When NULL, 
 #'        the height is set to 1/5 of the box height.
@@ -142,7 +142,11 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=21, size=unit(1, 'char'), col='
 #'
 plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1, 
                              col='#663399', userect=FALSE, height=NULL,
-                             br_palette=page_options$new()$get_palette()) {
+                             options=page_options$new()) {
+  
+  br_palette <- options$get_palette()
+  lty_ <- options$forest.line.type
+  lwd_ <- options$forest.line.width
   
   if (is.null(col) & N2>1) {
     col <- br_palette[n2]
@@ -153,9 +157,9 @@ plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1,
   }
 
   if(!userect) {
-    plot_horizontal_seg(box, c(x_lower, x_upper), n1, n2, N2, col=col)
+    plot_horizontal_seg(box, c(x_lower, x_upper), n1, n2, N2, lty=lty_, lwd=lwd_, col=col)
   } else {
-    plot_long_rectangle(box, c(x_lower, x_upper), n1, n2, N2, col=col, height=height)
+    plot_long_rectangle(box, c(x_lower, x_upper), n1, n2, N2, lty=lty_, lwd=lwd_, col=col, height=height)
   }
 
   plot_dot(box, x_dot, n1, n2, N2, col=col)

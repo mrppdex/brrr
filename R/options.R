@@ -14,7 +14,13 @@
 #' @field axis.label.font.size The font size of the axis labels.
 #' @field axis.ticks.font.size The font size of the axis ticks.
 #' @field box.spacing The spacing between boxes.
+#' @field box.fill.color The color of the box fill.
 #' @field br_palette The color palette for the page.
+#' @field legend.label.font.size The font size of the legend labels.
+#' @field legend.header.font.size The font size of the legend header.
+#' @field legend.fill.color The color of the legend fill.
+#' @field forest.line.type The line type for the forest plot.
+#' @field forest.line.width The line width for the forest plot.
 #' 
 #' @format An object of class \code{page_options}
 #' @import R6
@@ -35,6 +41,12 @@ page_options <- R6Class("page_options",
                             axis.label.font.size = convertUnit(unit(4, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             box.spacing = convertUnit(unit(15, 'mm'), 'npc', valueOnly=TRUE),
+                            box.fill.color = "#ded8db43",
+                            legend.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            legend.header.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            legend.fill.color = "#ffef0954",
+                            forest.line.type = 1,
+                            forest.line.width = 3,
                             #' @description Initialize the page options.
                             #' @param PAGE_TOP_MARGIN The top margin of the page.
                             #' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.

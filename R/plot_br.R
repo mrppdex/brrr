@@ -139,7 +139,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
       for(k in 1:nrow(data_sub_subset)) {
         plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
                         data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
-                        userect=userect, col=NULL, br_palette=box$box$header$options$get_palette())
+                        userect=userect, col=NULL, options=box$box$header$options)
       }
     }  
 

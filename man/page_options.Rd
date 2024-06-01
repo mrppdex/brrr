@@ -40,7 +40,19 @@ It includes properties for the page margins, header height, and color palette.
 
 \item{\code{box.spacing}}{The spacing between boxes.}
 
+\item{\code{box.fill.color}}{The color of the box fill.}
+
 \item{\code{br_palette}}{The color palette for the page.}
+
+\item{\code{legend.label.font.size}}{The font size of the legend labels.}
+
+\item{\code{legend.header.font.size}}{The font size of the legend header.}
+
+\item{\code{legend.fill.color}}{The color of the legend fill.}
+
+\item{\code{forest.line.type}}{The line type for the forest plot.}
+
+\item{\code{forest.line.width}}{The line width for the forest plot.}
 }
 \if{html}{\out{</div>}}
 }

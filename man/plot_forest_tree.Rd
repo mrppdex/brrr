@@ -15,7 +15,7 @@ plot_forest_tree(
   col = "#663399",
   userect = FALSE,
   height = NULL,
-  br_palette = page_options$new()$get_palette()
+  options = page_options$new()
 )
 }
 \arguments{
@@ -40,7 +40,7 @@ plot_forest_tree(
 \item{height}{The height of the rectangle, used when userect is TRUE. When NULL,
 the height is set to 1/5 of the box height.}
 
-\item{br_palette}{The color palette to use (default is page_options$get_palette()).}
+\item{options}{The color palette to use (default is page_options$new()).}
 }
 \value{
 None

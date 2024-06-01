@@ -10,7 +10,7 @@ plot_dot(
   n1,
   n2 = 1,
   N2 = 1,
-  pch = 19,
+  pch = 21,
   size = unit(1, "char"),
   col = "black"
 )

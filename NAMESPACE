@@ -2,6 +2,7 @@
 
 export(add_benefit_arrows)
 export(add_box)
+export(add_legend)
 export(create_header)
 export(get_metadata)
 export(page_options)

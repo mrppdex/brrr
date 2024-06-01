@@ -78,6 +78,21 @@ part2_data <- plot_br(mock_data_risks, columns_specs_risks, breaks_width_risks,
                       userect=TRUE, neutral_pos = 2, num_ticks = 6, 
                       top_margin=1-part1_data$last_y+0.08,
                       options_br=risks_options)
+
+br_legend <- list(
+    list(type='line', pch=1, col=1, label = 'Treatment 100 mg'),
+    list(type='line', pch=2, col=2, col_txt=2, label = 'Treatment 500 mg'),
+    list(type='rectangle', pch=1, col=1, label = 'Treatment 100 mg')
+)
+
+last_options <- part2_data$boxes[[1]]$box$header$options
+
+add_legend(legend_items = br_legend,
+              xpos = unit(last_options$PAGE_LEFT_MARGIN, 'npc'),
+              ypos=unit(part2_data$last_y - 0.1, 'npc'),
+              width = unit(last_options$HEADER_WIDTH, 'npc'),
+              height = unit(0.06, 'npc'),
+              n_rows = NULL, n_cols = NULL, byrow = TRUE)
 ```
 
 <img src="man/figures/README-example-1.png" width="100%" />
