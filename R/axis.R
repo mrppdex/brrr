@@ -186,7 +186,8 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
                       x = tick_pos, 
                       y = unit(ypos - 1.5*tick_len - axis_ticks_label_height, 'npc'),
                       just = "bottom", 
-                      gp = gpar(fontsize = axis_label_font_size))
+                      gp = gpar(fontsize = axis_label_font_size), 
+                      rot=options$axis.ticks.font.rotation)
         }
 
         # add the axis label

@@ -38,6 +38,8 @@ It includes properties for the page margins, header height, and color palette.
 
 \item{\code{axis.ticks.font.size}}{The font size of the axis ticks.}
 
+\item{\code{axis.ticks.font.rotation}}{The rotation of the axis ticks.}
+
 \item{\code{box.spacing}}{The spacing between boxes.}
 
 \item{\code{box.fill.color}}{The color of the box fill.}
@@ -70,7 +72,7 @@ It includes properties for the page margins, header height, and color palette.
 \item \href{#method-page_options-get_header_font_size}{\code{page_options$get_header_font_size()}}
 \item \href{#method-page_options-set_header_font_size}{\code{page_options$set_header_font_size()}}
 \item \href{#method-page_options-get_axis_label_font_size}{\code{page_options$get_axis_label_font_size()}}
-\item \href{#method-page_options-set_axis_label_fong_size}{\code{page_options$set_axis_label_fong_size()}}
+\item \href{#method-page_options-set_axis_label_font_size}{\code{page_options$set_axis_label_font_size()}}
 \item \href{#method-page_options-get_axis_ticks_font_size}{\code{page_options$get_axis_ticks_font_size()}}
 \item \href{#method-page_options-set_axis_ticks_font_size}{\code{page_options$set_axis_ticks_font_size()}}
 \item \href{#method-page_options-get_box_spacing}{\code{page_options$get_box_spacing()}}
@@ -271,12 +273,12 @@ The font size of the axis labels.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_axis_label_fong_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_axis_label_fong_size}{}}}
-\subsection{Method \code{set_axis_label_fong_size()}}{
+\if{html}{\out{<a id="method-page_options-set_axis_label_font_size"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_axis_label_font_size}{}}}
+\subsection{Method \code{set_axis_label_font_size()}}{
 Set the font size of the axis labels.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_label_fong_size(size)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_label_font_size(size)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

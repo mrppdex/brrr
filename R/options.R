@@ -13,6 +13,7 @@
 #' @field header.label.font.size The font size of the header labels.
 #' @field axis.label.font.size The font size of the axis labels.
 #' @field axis.ticks.font.size The font size of the axis ticks.
+#' @field axis.ticks.font.rotation The rotation of the axis ticks.
 #' @field box.spacing The spacing between boxes.
 #' @field box.fill.color The color of the box fill.
 #' @field br_palette The color palette for the page.
@@ -40,6 +41,7 @@ page_options <- R6Class("page_options",
                             header.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             axis.label.font.size = convertUnit(unit(4, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            axis.ticks.font.rotation = 0,
                             box.spacing = convertUnit(unit(15, 'mm'), 'npc', valueOnly=TRUE),
                             box.fill.color = "#ded8db43",
                             legend.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
@@ -131,7 +133,7 @@ page_options <- R6Class("page_options",
                             },
                             #' @description Set the font size of the axis labels.
                             #' @param size The font size to set.
-                            set_axis_label_fong_size = function(size) {
+                            set_axis_label_font_size = function(size) {
                                 self$axis.label.font.size <- size
                             },
                             #' @description Get the font size of the axis ticks.
