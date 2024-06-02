@@ -16,6 +16,7 @@ plot_axis(
   logscale = FALSE,
   b = 10,
   show_axis = TRUE,
+  secondary_ticks = TRUE,
   options = page_options$new()
 )
 }
@@ -41,6 +42,8 @@ plot_axis(
 \item{b}{The base for logarithmic scale.}
 
 \item{show_axis}{Logical value indicating whether to show the axis.}
+
+\item{secondary_ticks}{Logical value indicating whether to show secondary ticks.}
 
 \item{options}{The page options object.}
 }

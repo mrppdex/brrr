@@ -13,6 +13,7 @@
 #' @param logscale Logical value indicating whether to use logarithmic scale.
 #' @param b The base for logarithmic scale.
 #' @param show_axis Logical value indicating whether to show the axis.
+#' @param secondary_ticks Logical value indicating whether to show secondary ticks.
 #' @param options The page options object.
 #'
 #' @return A list containing the following elements:
@@ -50,7 +51,7 @@
 #'
 #' @export
 plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos, 
-                      label=NULL, logscale=FALSE, b = 10, show_axis=TRUE, 
+                      label=NULL, logscale=FALSE, b = 10, show_axis=TRUE, secondary_ticks=TRUE,
                       options=page_options$new()) {
     
     # when logscale is TRUE stop if from or to is <= 0
@@ -74,21 +75,16 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
     # linear tick size
     if(!logscale) {
-        cat('from:', from, 'to:', to, ' n_ticks:', n_ticks, 'neutral_pos:', neutral_pos, '\n')
         ratio_lhs_linear <- ifelse(from<to, pretty(abs(from)/neutral_pos)[2], pretty(abs(to)/neutral_pos)[2])
         ratio_rhs_linear <- ifelse(from<to, pretty(abs(to)/(n_ticks-neutral_pos))[2], pretty(abs(from)/(n_ticks-neutral_pos))[2])
-
-        cat(' ratio_lhs_linear:', ratio_lhs_linear, 'ratio_rhs_linear:', ratio_rhs_linear, '\n')
 
         linear_tick_delta <- max(ratio_lhs_linear, ratio_rhs_linear)
 
         from_linear <- ifelse(from<=to, linear_tick_delta*neutral_pos, linear_tick_delta*(n_ticks-neutral_pos))
         to_linear <- ifelse(from<=to, linear_tick_delta*(n_ticks-neutral_pos), linear_tick_delta*neutral_pos)
         ratio <- linear_tick_delta
-        cat(' linear_tick_delta:', linear_tick_delta, 'from_linear:', from_linear, 'to_linear:', to_linear, '\n')
     }
 
-    cat(' ratio:', ratio, '\n')
     from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
     to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
 
@@ -117,7 +113,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
         }
 
         # plot small ticks if logscale
-        if(logscale & b==10) {
+        if(secondary_ticks & logscale & b==10) {
             seq_direction <- ifelse(from < to, 1, -1)
 
             ticks_small <- NULL
@@ -126,6 +122,16 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             } else {
                 ticks_small <- rev(b^from + cumsum(rep(diff(b^axis_range)/10, each=10)))
             }
+
+            for (i in 1:length(ticks_small)) {
+                tick_pos <- scale_function(ticks_small[i])
+                grid.lines(x = c(tick_pos, tick_pos), y = c(ypos - tick_len/2, ypos), gp = gpar(lwd = 1))
+            }
+        }
+
+        # plot secondary ticks on linear scale
+        if(secondary_ticks & !logscale) {
+            ticks_small <- pretty(axis_range, n=2*length(axis_range))
 
             for (i in 1:length(ticks_small)) {
                 tick_pos <- scale_function(ticks_small[i])
