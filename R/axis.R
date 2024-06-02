@@ -131,7 +131,24 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
         # plot secondary ticks on linear scale
         if(secondary_ticks & !logscale) {
-            ticks_small <- pretty(axis_range, n=2*length(axis_range))
+            n_subticks <- NULL
+            ratio_ <- ratio
+            ratio_conversion_factor <- 10^abs(floor(log(ratio, 10)))
+            if(log(ratio, 10)<1) {
+                ratio_ <- ratio*ratio_conversion_factor 
+            }
+            if (ratio_ %% 3 == 0) {
+                n_subticks <- 3
+            } else if (ratio_ %% 4 == 0) {
+                n_subticks <- 4
+            } else if (ratio_ %% 2 == 0) {
+                n_subticks <- 2
+            } else {
+                n_subticks <- 1
+            }
+
+            subtick_delta <- ifelse(log(ratio, 10)<1, (ratio_/n_subticks)/ratio_conversion_factor, ratio_/n_subticks)
+            ticks_small <- seq(axis_range[1], axis_range[length(axis_range)], by=subtick_delta)
 
             for (i in 1:length(ticks_small)) {
                 tick_pos <- scale_function(ticks_small[i])

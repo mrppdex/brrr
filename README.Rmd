@@ -77,7 +77,7 @@ risks_options$set_label_font_size(label_font_size)
 part2_data <- plot_br(mock_data_risks, columns_specs_risks, breaks_width_risks,
                       split_axis_by_col, axes_labels_col, split_box_by_col, 
                       userect=TRUE, neutral_pos = 2, num_ticks = 6, 
-                      top_margin=1-part1_data$last_y+0.08,
+                      box_group=part1_data,
                       options_br=risks_options)
 
 br_legend <- list(
@@ -86,7 +86,7 @@ br_legend <- list(
     list(type='rectangle', pch=1, col=1, label = 'Treatment 100 mg')
 )
 
-last_options <- part2_data$boxes[[1]]$box$header$options
+last_options <- part2_data$options
 
 add_legend(legend_items = br_legend,
               xpos = unit(last_options$PAGE_LEFT_MARGIN, 'npc'),

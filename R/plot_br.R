@@ -14,9 +14,10 @@
 #' @param userect A logical value specifying whether to use rectangles in the plot.
 #' @param arrow_labels A character vector specifying the labels for the arrows in the plot.
 #' @param value_collapse A logical vector specifying whether to collapse the values within each column/row.
+#' @param box_group An optional header object specifying the `plot_br` object to group with.
 #' @param options_br An optional page_options object specifying the options for the plot.
 #'
-#' @return A list containing the boxes in the plot and the last y-position of the plot.
+#' @return A list containing the boxes in the plot, used options and the last y-position of the plot.
 #'
 #' @examples
 #' \dontrun{
@@ -44,18 +45,26 @@ plot_br <- function(data, columns_specs, breaks_widths,
                     top_margin = NULL, userect = FALSE,
                     arrow_labels = c('Favors\nTreatment', 'Favors\nPlacebo'),
                     value_collapse=rep(FALSE, length(columns_specs)),
+                    box_group=NULL,
                     options_br = page_options$new()) {
 
   # make sure lengths are ok
   stopifnot(length(breaks_widths)==length(columns_specs))
 
   # new page
-  if (is.null(top_margin)) grid.newpage()
+  if (is.null(top_margin) & is.null(box_group)) grid.newpage()
 
   # 1. CREATE HEADER
   if (!is.null(top_margin)) {
     options_br$set_page_parameter('PAGE_TOP_MARGIN', top_margin)
+  } else if (!is.null(box_group) ) {
+    if (box_group$name!='box_group') {
+      stop('box_group must be a header object')
+    }
+    new_top_margin <- 1 - box_group$last_y + options_br$get_box_spacing()
+    options_br$set_page_parameter('PAGE_TOP_MARGIN', new_top_margin)
   }
+
   header_br <- create_header(breaks_widths, names(columns_specs), options=options_br)
 
   # 2. ADD BOXES
@@ -145,7 +154,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
 
   }
 
-  return(list(boxes = boxes, last_y = min(last_graph_part$y_pos)))
+  return(list(name='box_group', boxes = boxes, options=options_br, last_y = min(last_graph_part$y_pos)))
 }
 
 

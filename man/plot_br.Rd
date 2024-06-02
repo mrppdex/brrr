@@ -17,6 +17,7 @@ plot_br(
   userect = FALSE,
   arrow_labels = c("Favors\\nTreatment", "Favors\\nPlacebo"),
   value_collapse = rep(FALSE, length(columns_specs)),
+  box_group = NULL,
   options_br = page_options$new()
 )
 }
@@ -45,10 +46,12 @@ plot_br(
 
 \item{value_collapse}{A logical vector specifying whether to collapse the values within each column/row.}
 
+\item{box_group}{An optional header object specifying the \code{plot_br} object to group with.}
+
 \item{options_br}{An optional page_options object specifying the options for the plot.}
 }
 \value{
-A list containing the boxes in the plot and the last y-position of the plot.
+A list containing the boxes in the plot, used options and the last y-position of the plot.
 }
 \description{
 This function plots BR (Bayesian Regression) data using a forest plot. It takes in various parameters to customize the plot.
