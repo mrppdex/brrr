@@ -22,21 +22,27 @@
 #'
 #' @import dplyr
 #' @export
-get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_col) {
+get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_col, vline_col) {
 
     if (!'reversed' %in% colnames(data)) {
         data$reversed <- FALSE
+    }
+  
+    safe_max <- function(x) {
+      if(all(is.na(unique(x)))) return(NA)
+      max(x[!is.na(x)])
     }
     
     mock_data_meta <- data %>%
         group_by_at({{split_axis_by_col}}) %>%
         mutate(across({{split_box_by_col}}, ~ length(unique(.)), .names="ncats")) %>%
+        mutate(across({{vline_col}}, ~ safe_max(.), .names="vertical_line")) %>%
         mutate(minval = min(value, lower, upper), maxval = max(value, lower, upper)) %>%
         mutate(reversed = any(reversed)) %>%
         group_by_at(c({{split_box_by_col}}, {{split_axis_by_col}})) %>%
         mutate(nsubcats = n()) %>%
         ungroup() %>%
-        select(any_of(c(split_axis_by_col, axis_labels_col, split_box_by_col, 'ncats', 'nsubcats', 'minval', 'maxval', 'reversed', 'logscale', 'logbase'))) %>%
+        select(any_of(c(split_axis_by_col, axis_labels_col, split_box_by_col, 'vertical_line', 'ncats', 'nsubcats', 'minval', 'maxval', 'reversed', 'logscale', 'logbase'))) %>%
         distinct()
     
     return(mock_data_meta)

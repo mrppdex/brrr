@@ -15,6 +15,7 @@
 #' @field axis.ticks.font.size The font size of the axis ticks.
 #' @field axis.ticks.font.rotation The rotation of the axis ticks.
 #' @field box.spacing The spacing between boxes.
+#' @field box.category.height Height of a single category.
 #' @field box.fill.color The color of the box fill.
 #' @field br_palette The color palette for the page.
 #' @field legend.label.font.size The font size of the legend labels.
@@ -38,11 +39,14 @@ page_options <- R6Class("page_options",
                                            "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
                                            "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A"),
                             row.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             header.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            header.label.color = "#043099",
                             axis.label.font.size = convertUnit(unit(4, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.rotation = 0,
-                            box.spacing = convertUnit(unit(15, 'mm'), 'npc', valueOnly=TRUE),
+                            box.spacing = convertUnit(unit(20, 'mm'), 'npc', valueOnly=TRUE),
+                            box.category.height = unit(15, 'mm'),
                             box.fill.color = "#ded8db43",
                             legend.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             legend.header.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),

@@ -87,6 +87,8 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
     from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
     to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
+    
+    #cat(sprintf('DEBUG: from=%.2f; to=%.2f\n', from, to))
 
     axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
@@ -103,6 +105,20 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
 
     if (show_axis) {
+        # plot direction arrow
+      
+        dir_arrow <- arrow(type="closed", angle=10, length=unit(0.015, "npc"))
+        if(from<to) {
+          grid.lines(x = c(xlength+xpos - 0.01, xlength+xpos), 
+                     y = c(ypos, ypos),
+                     arrow=dir_arrow, gp = gpar(fill =  'black'))
+        } else {
+          grid.lines(x = c(xpos + 0.01, xpos), 
+                     y = c(ypos, ypos),
+                     arrow=dir_arrow, gp = gpar(fill =  'black'))
+        }
+        
+      
         # plot the axis
         grid.lines(x = c(xpos, xpos + xlength), y = c(ypos, ypos), gp = gpar(lwd = 1))
 
@@ -148,7 +164,8 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             }
 
             subtick_delta <- ifelse(log(ratio, 10)<1, (ratio_/n_subticks)/ratio_conversion_factor, ratio_/n_subticks)
-            ticks_small <- seq(axis_range[1], axis_range[length(axis_range)], by=subtick_delta)
+            #cat(sprintf('DEBUG: start=%.2f; end=%.2f, subtick_delta=%.2f\n', axis_range[1], axis_range[length(axis_range)], subtick_delta))
+            ticks_small <- seq(axis_range[1], axis_range[length(axis_range)], by=subtick_delta*ifelse(axis_range[1]>axis_range[length(axis_range)], -1, 1))
 
             for (i in 1:length(ticks_small)) {
                 tick_pos <- scale_function(ticks_small[i])
@@ -169,7 +186,8 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             }
         }
 
-        axis_label_font_size <- options$get_axis_label_font_size()
+        axis_tick_font_size  <- options$get_axis_ticks_font_size()
+        axis_label_font_size <- options$get_axis_label_font_size()*0.7
         axis_label_height <- convertHeight(unit(axis_label_font_size, 'points'),
                                            unitTo='npc', valueOnly = TRUE)
 
@@ -186,7 +204,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
                       x = tick_pos, 
                       y = unit(ypos - 1.5*tick_len - axis_ticks_label_height, 'npc'),
                       just = "bottom", 
-                      gp = gpar(fontsize = axis_label_font_size), 
+                      gp = gpar(fontsize = axis_tick_font_size), 
                       rot=options$axis.ticks.font.rotation)
         }
 

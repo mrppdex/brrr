@@ -87,12 +87,16 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
 #' plot_dot(box = my_box, x = 0.5, n1 = 10, n2 = 2, N2 = 20, pch = 19, size = unit(1, 'char'), 
 #'          col = 'black')
 #' }
-plot_dot <- function(box, x, n1, n2=1, N2=1, pch=21, size=unit(1, 'char'), col='black') {
+plot_dot <- function(box, x, n1, n2=1, N2=1, pch=NULL, size=unit(1, 'char'), col='black') {
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
   yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
   
-  if (N2>1) {
+  if (is.null(pch) & N2>1) {
     pch <- 21 + (n2-1) %% 6
+  } else if (is.null(pch)) {
+    pch <- 21
+  } else {
+    pch <- 21 + (pch-1) %% 6
   }
 
   grid.points(x = unit(xvec, 'npc'), y = unit(yvec, 'npc'),
@@ -141,7 +145,7 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=21, size=unit(1, 'char'), col='
 #' }
 #'
 plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1, 
-                             col='#663399', userect=FALSE, height=NULL,
+                             col='#663399', pch=NULL, userect=FALSE, height=NULL,
                              options=page_options$new()) {
   
   br_palette <- options$get_palette()
@@ -162,6 +166,6 @@ plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1,
     plot_long_rectangle(box, c(x_lower, x_upper), n1, n2, N2, lty=lty_, lwd=lwd_, col=col, height=height)
   }
 
-  plot_dot(box, x_dot, n1, n2, N2, col=col)
+  plot_dot(box, x_dot, n1, n2, N2, col=col, pch=pch)
   
 }

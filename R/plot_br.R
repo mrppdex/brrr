@@ -41,12 +41,24 @@
 #' @export
 plot_br <- function(data, columns_specs, breaks_widths, 
                     split_axis_by_col, axis_labels_col, split_box_by_col, # data splitting
+                    vline_col=NULL, # e.g. Non-Inferiority Margin
                     neutral_pos = 3, num_ticks = 6,
                     top_margin = NULL, userect = FALSE,
                     arrow_labels = c('Favors\nTreatment', 'Favors\nPlacebo'),
                     value_collapse=rep(FALSE, length(columns_specs)),
-                    box_group=NULL,
+                    label_text_size = NULL,
+                    box_group=NULL, colors_by=NULL,
                     options_br = page_options$new()) {
+  cat('DEBUG: plot_br\n')
+  
+  if (is.null(colors_by))  {
+    colors_by <- 'tmpcolorsby'
+    data <- data %>% mutate(!!colors_by:='x')
+  }
+  
+  get_color <- function(group) {
+    which((data %>% select(all_of(!!colors_by)) %>% distinct() %>% pull(!!colors_by)) == as.character(group))
+  }
 
   # make sure lengths are ok
   stopifnot(length(breaks_widths)==length(columns_specs))
@@ -61,6 +73,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
     if (box_group$name!='box_group') {
       stop('box_group must be a header object')
     }
+    options_br <- box_group$options
     new_top_margin <- 1 - box_group$last_y + options_br$get_box_spacing()
     options_br$set_page_parameter('PAGE_TOP_MARGIN', new_top_margin)
   }
@@ -68,12 +81,14 @@ plot_br <- function(data, columns_specs, breaks_widths,
   header_br <- create_header(breaks_widths, names(columns_specs), options=options_br)
 
   # 2. ADD BOXES
-  data_meta <- get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col)
+  cat('DEBUG: get_metadata\n')
+  data_meta <- get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col, vline_col)
 
   # remember last added graph part
   last_graph_part <- header_br
   boxes <- list()
 
+  cat('DEBUG: add_boxes loop\n')
   for (est in unique(data_meta[[split_axis_by_col]])) {
     data_meta_subset <- data_meta %>% 
       filter(if_all(split_axis_by_col, ~ .x==est))
@@ -97,19 +112,27 @@ plot_br <- function(data, columns_specs, breaks_widths,
                           any(data_meta_subset$reversed), FALSE)
 
     axis_label <- data_meta_subset[[axis_labels_col]][1]
+    vline_val <- NULL 
+    if(!is.null(vline_col)) {
+      print(data_meta_subset)
+      vline_val <- max(data_meta_subset$vertical_line)
+      vline_val <- ifelse(is.infinite(vline_val), NULL, vline_val)
+    } 
 
+    cat('DEBUG: ADDING BOXES\n')
     last_graph_part <- add_box( last_graph_part, spacing, ncats, 
-                                unit(10, 'mm'), neutral_pos, num_ticks, 
+                                options_br$box.category.height, 
+                                neutral_pos, num_ticks, 
                                 ifelse(is_reversed, maxval, minval), 
                                 ifelse(is_reversed, minval, maxval), label=axis_label, 
-                                logscale=(!is.na(logscale) & logscale), 
+                                logscale=(!is.na(logscale) & logscale),
                                 b=ifelse(is.na(logbase), 2, logbase), 
                                 arrow_labels = arrow_labels,
-                                show_axis=TRUE)
+                                show_axis=TRUE, vline=vline_val)
 
     boxes[[est]] <- list(box=last_graph_part)
   }
-
+  
   for (est in unique(data_meta[[split_axis_by_col]])) {
     column_names   <- names(columns_specs)
     
@@ -123,12 +146,16 @@ plot_br <- function(data, columns_specs, breaks_widths,
     unique_endpoints <- unique(data_subset[[split_box_by_col]])
 
     # plot data
+    cat(sprintf('DEBUG: plot data '))
     for (ben_idx in seq_along(unique_endpoints)) {
 
+      cat(ben_idx, ' ')
+      
       ben <- unique_endpoints[ben_idx]
       data_sub_subset <- data_subset %>% 
           filter(if_all(split_box_by_col, ~ .x==!!ben)) 
-
+      
+      
       # add labels to each box
       for (cn_idx in seq_along(column_names)) {
         column_name <- columns_specs[cn_idx]
@@ -137,18 +164,37 @@ plot_br <- function(data, columns_specs, breaks_widths,
           unique_column_names <- unique(unique_column_names)
         }
         
-        for (j in 1:length(unique_column_names)) {
+        text_size_ <- options_br$label.font.size
+        if (!is.null(label_text_size) & !is.null(label_text_size[cn_idx])) {
+          text_size_ <- text_size_*label_text_size[cn_idx]
+        }
+        
+        for (j in 1:max(length(unique_column_names), 1)) {
+          
+          header_options_ <- box$box$header$options
+          col_ <- ifelse(!is.null(colors_by), header_options_$get_palette()[get_color(data_sub_subset[j, colors_by])], header_options_$get_palette()[j])
+          
+          #add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
+          #          col=box$box$header$options$get_palette()[j])
+          
           add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
-                    col=box$box$header$options$get_palette()[j])
+                    col=col_, fontsize=text_size_)
         }
         
       }
 
       # plot the forest plot
       for(k in 1:nrow(data_sub_subset)) {
+        
+        header_options_ <- box$box$header$options
+        
+        col_ <- ifelse(!is.null(colors_by), header_options_$get_palette()[get_color(data_sub_subset[k, colors_by])], 'black')
+        
+        pch_idx_ <- ifelse(!is.null(colors_by), get_color(data_sub_subset[k, colors_by]), NULL)
+        
         plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
                         data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
-                        userect=userect, col=NULL, options=box$box$header$options)
+                        userect=userect, col=col_, pch=pch_idx_, options=header_options_)
       }
     }  
 

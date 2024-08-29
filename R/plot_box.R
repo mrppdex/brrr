@@ -36,7 +36,9 @@
 #' }
 plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height, 
                      neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                     show_axis=TRUE, options=page_options$new()) {
+                     show_axis=TRUE, vline = NULL, options=page_options$new()) {
+  
+    cat('DEBUG: plot_box\n')
 
     # check if single_category_height unit is mm.
     # If true, convert it to npc
@@ -56,7 +58,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
     grid.rect(x = xpos, y = ypos, width = axis$length, height = box_height, 
               just = c('left', 'top'), gp = gpar(fill = options$box.fill.color, lty = 1, lwd = 1))
 
-    # separate each category with a faint vertical line across the whole
+    # separate each category with a faint horizontal line across the whole
     # width of the box
     for (i in 1:(n_categories-1)) {
         grid.lines(x = c(xpos, xpos + axis$length), 
@@ -64,12 +66,19 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
                    gp = gpar(lty = 3, lwd = 1))
     }
     
-    # plot the vertical line
+    # plot the vertical line at point of no difference and vlines
     axis_transform_fun <- axis$axis_function
 
     grid.lines(x = rep(axis_transform_fun(ifelse(logscale, 1, 0)), 2),
                y = c(ypos, ypos - n_categories * single_category_height), 
                gp = gpar(lty = 2, lwd = 1))
+    
+    if (!is.null(vline)) {
+      cat('DEBUG: ', vline, '\n')
+      grid.lines(x = rep(axis_transform_fun(vline), 2),
+                 y = c(ypos, ypos - n_categories * single_category_height),
+                 gp = gpar(lty = 3, lwd = 1))
+    }
 
     # return axis and the y positions of the categories
     return(list(axis = axis,
@@ -169,7 +178,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @export
 add_box <- function(obj, spacing, n_categories, single_category_height, 
                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                    show_axis=TRUE, arrow_labels = NULL, direction='up', userect=FALSE) {
+                    show_axis=TRUE, arrow_labels = NULL, direction='up', userect=FALSE, vline=NULL) {
     
     current_y <- NULL
 
@@ -210,7 +219,7 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
 
     # create a box
     box1 <- plot_box(global_box_x, current_y, global_box_width, n_categories, single_category_height, 
-                     neutral_pos, n_ticks, from, to, label, logscale, b, show_axis, options=options)
+                     neutral_pos, n_ticks, from, to, label, logscale, b, show_axis, vline=vline, options=options)
 
 
     # read header$breaks_position discard two last elements

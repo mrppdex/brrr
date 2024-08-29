@@ -62,7 +62,7 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
                 x = PAGE_LEFT_MARGIN+HEADER_WIDTH*(actual_breaks[i] + actual_breaks[i+1])/2, 
                 y = 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT/2,
                 just = c('center', 'center'),
-                gp = gpar(fontsize = options$get_header_font_size()))
+                gp = gpar(fontsize = options$get_header_font_size(), fontface = "bold", col=options$header.label.color))
     }
   }
 
@@ -139,7 +139,8 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     grid.text(label = ifelse(direction=='up', labels[1], labels[2]), 
               x = unit(x + distance_to_breaks/2, 'npc'), 
               y = unit(1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.5, 'npc'),
-              just = c('center', 'center'), gp = gpar(fontsize = label_font_size))
+              just = c('center', 'center'), 
+              gp = gpar(fontsize = label_font_size, fontface="bold", col=obj$options$header.label.color))
 
     # right arrow
     grid.lines(x = c(x - 0.01, x - distance_to_breaks),
@@ -150,6 +151,6 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
     grid.text(label = ifelse(direction=='up', labels[2], labels[1]),
               x = x - distance_to_breaks/2, 
               y = 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT*0.5,
-              just = c('center', 'center'), gp = gpar(fontsize = label_font_size))
+              just = c('center', 'center'),  gp = gpar(fontsize = label_font_size, fontface="bold", col=obj$options$header.label.color))
 }
 
