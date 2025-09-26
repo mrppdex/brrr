@@ -3,16 +3,19 @@ Title: Creates Benefits-Risk Plots
 Version: 0.0.0.9000
 Authors@R: 
     person("Pawel", "Piela", , "pawel.piela@lilly.com", role = c("aut", "cre"))
+Author: Pawel Piela
+Maintainer: Pawel Piela <pawel.piela@lilly.com>
 Description: What the package does (one paragraph).
 Imports:
     grid,
     dplyr,
     R6,
-    tidyr
-License: `use_mit_license()`
+    tidyr,
+    svglite
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.3
 Depends: 
     R (>= 2.10)
 LazyData: true

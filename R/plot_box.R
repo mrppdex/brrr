@@ -17,7 +17,9 @@
 #' @param logscale Logical value indicating whether to use logarithmic scale.
 #' @param b The base for logarithmic scale.
 #' @param show_axis Logical value indicating whether to show the axis.
+#' @param vline A numeric value specifying the position of a vertical line.
 #' @param options The page options object.
+#' @param vline A numeric value specifying the position of a vertical line.
 #'
 #' @return A list containing the following elements:
 #'  - axis: The axis of the box.
@@ -54,7 +56,7 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 
     # plot the box
     grid.rect(x = xpos, y = ypos, width = axis$length, height = box_height, 
-              just = c('left', 'top'), gp = gpar(fill = options$box.fill.color, lty = 1, lwd = 1))
+              just = c('left', 'top'), gp = gpar(fill = options$get_option('box.fill.color'), lty = 1, lwd = 1))
 
     # separate each category with a faint horizontal line across the whole
     # width of the box
@@ -104,6 +106,8 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @param arrow_labels The labels for the benefit arrows (default is NULL).
 #' @param direction The direction of the benefit arrows (default is 'up').
 #' @param userect Whether to use a rectangle for the box (default is FALSE).
+#' @param vline A numeric value specifying the position of a vertical line.
+#' @param colbreaks A numeric vector specifying the positions of column breaks.
 #'
 #' @return A list containing the label function, the box object, the options, the name, the header, and the y position.
 #'
@@ -189,8 +193,8 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
         stop('The object is not unknown')
     }
 
-    HEADER_HEIGHT <- options$get_page_parameter('HEADER_HEIGHT')
-    PAGE_TOP_MARGIN <- options$get_page_parameter('PAGE_TOP_MARGIN')
+    HEADER_HEIGHT <- options$get_option('HEADER_HEIGHT')
+    PAGE_TOP_MARGIN <- options$get_option('PAGE_TOP_MARGIN')
 
     if(!is.null(obj$name) & obj$name == 'header') {
         header <- obj
@@ -220,7 +224,7 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
                      neutral_pos, n_ticks, from, to, label, logscale, b, show_axis, vline=vline, options=options)
 
     # separate values
-    if(options$label.use.separation.line & !is.null(colbreaks) & length(colbreaks)==length(header$breaks_positions)-2) {
+    if(options$get_option('label.use.separation.line') & !is.null(colbreaks) & length(colbreaks)==length(header$breaks_positions)-2) {
       for (i in 1:(length(header$breaks_positions)-3)) {
         if(colbreaks[i]>=0) {
           if (is.unit(single_category_height)) { 
@@ -253,7 +257,7 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
                           fontsize=NULL, fontface='bold', col='black', isglobal=FALSE) 
     {
         if (is.null(fontsize)) {
-            fontsize <- options$get_label_font_size()
+            fontsize <- options$get_option('label.font.size')
         }
 
         y_pos <- box1$y_pos

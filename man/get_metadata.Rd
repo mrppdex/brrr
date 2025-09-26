@@ -2,34 +2,33 @@
 % Please edit documentation in R/data_ops.R
 \name{get_metadata}
 \alias{get_metadata}
-\title{Get metadata for a given dataset}
+\title{Get Metadata for a Dataset}
 \usage{
-get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col)
+get_metadata(
+  data,
+  split_axis_by_col,
+  axis_labels_col,
+  split_box_by_col,
+  vline_col
+)
 }
 \arguments{
 \item{data}{The dataset to calculate metadata for.}
 
-\item{split_axis_by_col}{The column to split the data by on the x-axis.}
+\item{split_axis_by_col}{The column to split the data by on the y-axis.}
 
 \item{axis_labels_col}{The column containing the axis labels.}
 
 \item{split_box_by_col}{The column to split the data by in each box.}
+
+\item{vline_col}{The column for vertical lines.}
 }
 \value{
 A data frame containing the calculated metadata.
 }
 \description{
-This function calculates metadata for a given dataset, including the number of unique categories,
-minimum and maximum values, whether the data is reversed, and the number of subcategories.
-}
-\examples{
-\dontrun{
-data <- data.frame(
-  x = c(1, 2, 3, 1, 2, 3),
-  y = c(4, 5, 6, 4, 5, 6),
-  category = c("A", "A", "B", "B", "C", "C")
-)
-get_metadata(data, x, category)
-}
-
+This function calculates metadata for a given dataset. The metadata includes
+the number of unique categories, minimum and maximum values, whether the data
+is reversed, and the number of subcategories. This information is crucial
+for constructing the plot layout.
 }

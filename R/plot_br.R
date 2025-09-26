@@ -1,43 +1,45 @@
-#' Plot BR
+#' Plot Benefit-Risk Data
 #'
-#' This function plots BR (Bayesian Regression) data using a forest plot. It takes in various parameters to customize the plot.
+#' This function creates a forest plot for benefit-risk assessment.
+#' It visualizes the data using boxes and forest plots, and allows for extensive customization.
 #'
-#' @param data The data frame containing the BR data.
-#' @param columns_specs A character named vector specifying the column names in the data frame that correspond to the different columns in the plot.
-#' @param breaks_widths A numeric vector specifying the widths of the breaks between the columns in the plot.
-#' @param split_axis_by_col A character string specifying the column name in the data frame to split the plot axis by.
-#' @param axis_labels_col A character string specifying the column name in the data frame to use as the axis labels.
-#' @param split_box_by_col A character string specifying the column name in the data frame to split the boxes within each axis by.
-#' @param neutral_pos A numeric value specifying the neutral position of the plot.
-#' @param num_ticks An optional numeric value specifying the number of ticks on the plot axis.
-#' @param top_margin An optional numeric value specifying the top margin of the plot.
-#' @param userect A logical value specifying whether to use rectangles in the plot.
-#' @param arrow_labels A character vector specifying the labels for the arrows in the plot.
-#' @param value_collapse A logical vector specifying whether to collapse the values within each column/row.
-#' @param box_group An optional header object specifying the `plot_br` object to group with.
-#' @param options_br An optional page_options object specifying the options for the plot.
+#' @param data A data frame containing the data to be plotted.
+#' @param columns_specs A named character vector specifying the columns in the plot.
+#' @param breaks_widths A numeric vector specifying the relative widths of the columns.
+#' @param split_axis_by_col The column name to split the y-axis by.
+#' @param axis_labels_col The column name for the axis labels.
+#' @param split_box_by_col The column name to split the boxes by.
+#' @param vline_col The column name for vertical lines (e.g., non-inferiority margin).
+#' @param neutral_pos The position of the neutral line.
+#' @param num_ticks The number of ticks on the axis.
+#' @param top_margin The top margin of the plot.
+#' @param userect Logical, whether to use rectangles for the forest plot.
+#' @param arrow_labels A character vector for the benefit direction arrows.
+#' @param value_collapse A logical vector indicating whether to collapse values in each column.
+#' @param label_text_size A numeric vector to adjust the label text size.
+#' @param header_text_size A numeric vector to adjust the header text size.
+#' @param box_group An optional `plot_br` object to group with.
+#' @param colors_by The column name to color the plot elements by.
+#' @param options_br A `page_options` object with plot options.
+#' @param filename An optional string specifying the filename to save the plot.
 #'
-#' @return A list containing the boxes in the plot, used options and the last y-position of the plot.
+#' @return A list containing the boxes in the plot, used options, and the last y-position.
+#'
+#' @import dplyr
+#' @import grid
+#' @import svglite
 #'
 #' @examples
 #' \dontrun{
-#' #create header
-#' breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
+#' data(mock_data)
 #' columns_specs <- c('Benefits'='endpoint', 
 #'               'Treatment\n(N=100)'='treatment', 
 #'               'Placebo\n(N=100)'='placebo',
 #'               'Comparison\nHR or Odds Ratio\n(95% CI)'='col3')
-#' value_collapse <- c(TRUE, FALSE, FALSE, FALSE)
-#' 
-#' split_axis_by_col <- 'estimator'
-#' split_box_by_col <- 'endpoint'
-#' 
-#' # load data and add column
-#' data(mock_data)
-#' part1_data <- plot_br(mock_data, columns_specs, breaks_widths, 
-#' split_axis_by_col, split_box_by_col, top_margin=NULL, value_collapse=value_collapse)
+#' plot_br(mock_data, columns_specs, c(0.2, -0.1, 0.1, 0.2), 
+#'         'estimator', 'endpoint', 'endpoint')
 #' }
-#' 
+#'
 #' @export
 plot_br <- function(data, columns_specs, breaks_widths, 
                     split_axis_by_col, axis_labels_col, split_box_by_col, # data splitting
@@ -49,8 +51,12 @@ plot_br <- function(data, columns_specs, breaks_widths,
                     label_text_size = NULL,
                     header_text_size = NULL,
                     box_group=NULL, colors_by=NULL,
-                    options_br = page_options$new()) {
-  
+                    options_br = page_options$new(),
+                    filename = NULL) {
+
+  if (!is.null(filename)) {
+    svglite(filename, width = options_br$get_option('plot.width'), height = options_br$get_option('plot.height'))
+  }
   
   if (is.null(colors_by))  {
     colors_by <- 'tmpcolorsby'
@@ -69,14 +75,14 @@ plot_br <- function(data, columns_specs, breaks_widths,
 
   # 1. CREATE HEADER
   if (!is.null(top_margin)) {
-    options_br$set_page_parameter('PAGE_TOP_MARGIN', top_margin)
+    options_br$set_option('PAGE_TOP_MARGIN', top_margin)
   } else if (!is.null(box_group) ) {
     if (box_group$name!='box_group') {
       stop('box_group must be a header object')
     }
     options_br <- box_group$options
-    new_top_margin <- 1 - box_group$last_y + options_br$get_box_spacing()
-    options_br$set_page_parameter('PAGE_TOP_MARGIN', new_top_margin)
+    new_top_margin <- 1 - box_group$last_y + options_br$get_option('box.spacing')
+    options_br$set_option('PAGE_TOP_MARGIN', new_top_margin)
   }
 
   header_br <- create_header(breaks_widths, names(columns_specs), header_text_size, options=options_br)
@@ -115,7 +121,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
                        2)
 
     spacing <- ifelse(last_graph_part$name=='header', 0, 
-                      options_br$get_box_spacing())
+                      options_br$get_option('box.spacing'))
 
     is_reversed <- ifelse('reversed' %in% colnames(data_meta_subset),
                           any(data_meta_subset$reversed), FALSE)
@@ -129,7 +135,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
     } 
 
     last_graph_part <- add_box( last_graph_part, spacing, ncats, 
-                                options_br$box.category.height, 
+                                options_br$get_option('box.category.height'), 
                                 neutral_pos, num_ticks, 
                                 ifelse(is_reversed, maxval, minval), 
                                 ifelse(is_reversed, minval, maxval), label=axis_label, 
@@ -144,9 +150,6 @@ plot_br <- function(data, columns_specs, breaks_widths,
   for (est in unique(data_meta[[split_axis_by_col]])) {
     column_names   <- names(columns_specs)
     
-    
-    
-    
     data_subset <- data %>% 
       filter(if_all(split_axis_by_col, ~ .x==est))
 
@@ -160,8 +163,6 @@ plot_br <- function(data, columns_specs, breaks_widths,
     
     for (ben_idx in seq_along(unique_endpoints)) {
 
-      
-      
       ben <- unique_endpoints[ben_idx]
       data_sub_subset <- data_subset %>% 
           filter(if_all(split_box_by_col, ~ .x==!!ben)) 
@@ -176,7 +177,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
           unique_column_names <- unique(unique_column_names)
         }
         
-        text_size_ <- options_br$label.font.size
+        text_size_ <- options_br$get_option('label.font.size')
         if (!is.null(label_text_size) & !is.null(label_text_size[cn_idx])) {
           text_size_ <- text_size_*label_text_size[cn_idx]
         }
@@ -185,12 +186,12 @@ plot_br <- function(data, columns_specs, breaks_widths,
           
           header_options_ <- box$box$header$options
           col_ <- ifelse(!is.null(colors_by), 
-                         header_options_$get_palette()[get_color(data_sub_subset[j, colors_by])], 
-                         header_options_$get_palette()[j])
+                         header_options_$get_option('br_palette')[get_color(data_sub_subset[j, colors_by])], 
+                         header_options_$get_option('br_palette')[j])
           
           
           add_label(unique_column_names[j], cn_idx, ben_idx, n=j, N=length(unique_column_names), 
-                    col=ifelse(cn_idx==1 | !header_options_$label.font.usecolors, 'black', col_), fontsize=text_size_)
+                    col=ifelse(cn_idx==1 | !header_options_$get_option('label.font.usecolors'), 'black', col_), fontsize=text_size_)
         }
         
       }
@@ -200,9 +201,9 @@ plot_br <- function(data, columns_specs, breaks_widths,
         
         header_options_ <- box$box$header$options
         
-        col_ <- ifelse(!is.null(colors_by), header_options_$get_palette()[get_color(data_sub_subset[k, colors_by])], 'black')
+        col_ <- ifelse(!is.null(colors_by), header_options_$get_option('br_palette')[get_color(data_sub_subset[k, colors_by])], 'black')
         
-        pch_idx_ <- ifelse(!is.null(colors_by), get_color(data_sub_subset[k, colors_by]), NULL) + options_br$forest.pch.shift
+        pch_idx_ <- ifelse(!is.null(colors_by), get_color(data_sub_subset[k, colors_by]), NULL) + options_br$get_option('forest.pch.shift')
         
         plot_forest_tree(box$box$box, data_sub_subset[k, 'lower'], data_sub_subset[k, 'upper'], 
                         data_sub_subset[k, 'value'], ben_idx, k, nrow(data_sub_subset), 
@@ -210,6 +211,10 @@ plot_br <- function(data, columns_specs, breaks_widths,
       }
     }  
 
+  }
+
+  if (!is.null(filename)) {
+    dev.off()
   }
 
   return(list(name='box_group', boxes = boxes, options=options_br, last_y = min(last_graph_part$y_pos)))

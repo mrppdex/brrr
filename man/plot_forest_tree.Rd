@@ -13,6 +13,7 @@ plot_forest_tree(
   n2 = 1,
   N2 = 1,
   col = "#663399",
+  pch = NULL,
   userect = FALSE,
   height = NULL,
   options = page_options$new()
@@ -34,6 +35,8 @@ plot_forest_tree(
 \item{N2}{The N2 parameter (default is 1).}
 
 \item{col}{The color of the forest tree (default is '#663399').}
+
+\item{pch}{The symbol to use for the dots (default is NULL).}
 
 \item{userect}{The userect parameter (default is FALSE).}
 

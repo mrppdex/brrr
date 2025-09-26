@@ -52,7 +52,7 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
     legend_height <- height / n_rows
     
     if(!is.null(label)) {
-        legend_label_font_size <- options$legend.header.font.size
+        legend_label_font_size <- options$get_option('legend.header.font.size')
         legend_label_font_size <- unit(legend_label_font_size, 'points')
 
         # convert legend_label_font_size to npc
@@ -77,7 +77,7 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
     # draw box 
     grid.rect(x = xpos, y = ypos, width = width, height = height, 
               just = c('left', 'top'),
-              gp = gpar(fill = options$legend.fill.color, lty = 1, lwd = 1))
+              gp = gpar(fill = options$get_option('legend.fill.color'), lty = 1, lwd = 1))
 
     for (item_idx in seq_along(legend_items)) {
         col_num <- NULL
@@ -108,19 +108,19 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
             }
         }
 
-        legend_lwd <- get_default(legend_lwd, options$forest.line.width)
-        legend_lty <- get_default(legend_lty, options$forest.line.type)
+        legend_lwd <- get_default(legend_lwd, options$get_option('forest.line.width'))
+        legend_lty <- get_default(legend_lty, options$get_option('forest.line.type'))
 
         get_default_color <- function(x) {
             if(is.null(x)) {
-                return(options$br_palette[1])
+                return(options$get_option('br_palette')[1])
             } else {
-                return(options$br_palette[x])
+                return(options$get_option('br_palette')[x])
             }
         }
 
         legend_color <- get_default_color(legend_color)
-        legend_text_color <- ifelse(options$label.font.usecolors, get_default_color(legend_text_color), 'black')
+        legend_text_color <- ifelse(options$get_option('label.font.usecolors'), get_default_color(legend_text_color), 'black')
 
         max_width <- convertWidth(unit(20, 'mm'), 'npc', valueOnly=TRUE)
         max_width <- unit(min(max_width, 0.25*legend_width), 'npc')
@@ -152,7 +152,7 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
             txt_pos <- ifelse(!is.null(legend_type) & legend_type=='text', 0.05, 1.2)
             grid.text(legend_label, x = xpos + col_num * legend_width + max_width*txt_pos, 
                       y = ypos - row_num * legend_height - legend_height / 2, just = 'left', 
-                      gp = gpar(fontsize = options$legend.label.font.size, 
+                      gp = gpar(fontsize = options$get_option('legend.label.font.size'), 
                                 col=legend_text_color))
         }
     }

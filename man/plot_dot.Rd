@@ -10,7 +10,7 @@ plot_dot(
   n1,
   n2 = 1,
   N2 = 1,
-  pch = 21,
+  pch = NULL,
   size = unit(1, "char"),
   col = "black"
 )
@@ -26,7 +26,7 @@ plot_dot(
 
 \item{N2}{The total number of dots (default is 1).}
 
-\item{pch}{The symbol to use for the dots (default is 19).}
+\item{pch}{The symbol to use for the dots (default is NULL).}
 
 \item{size}{The size of the dots (default is unit(1, 'char')).}
 

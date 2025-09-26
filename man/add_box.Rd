@@ -19,7 +19,9 @@ add_box(
   show_axis = TRUE,
   arrow_labels = NULL,
   direction = "up",
-  userect = FALSE
+  userect = FALSE,
+  vline = NULL,
+  colbreaks = NULL
 )
 }
 \arguments{
@@ -52,6 +54,10 @@ add_box(
 \item{direction}{The direction of the benefit arrows (default is 'up').}
 
 \item{userect}{Whether to use a rectangle for the box (default is FALSE).}
+
+\item{vline}{A numeric value specifying the position of a vertical line.}
+
+\item{colbreaks}{A numeric vector specifying the positions of column breaks.}
 }
 \value{
 A list containing the label function, the box object, the options, the name, the header, and the y position.

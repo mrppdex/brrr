@@ -76,7 +76,7 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
 #' @param n1 The number of dots to plot.
 #' @param n2 The number of dots to plot (default is 1).
 #' @param N2 The total number of dots (default is 1).
-#' @param pch The symbol to use for the dots (default is 19).
+#' @param pch The symbol to use for the dots (default is NULL).
 #' @param size The size of the dots (default is unit(1, 'char')).
 #' @param col The color of the dots (default is 'black').
 #'
@@ -118,10 +118,11 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=NULL, size=unit(1, 'char'), col
 #' @param n2 The n2 parameter (default is 1).
 #' @param N2 The N2 parameter (default is 1).
 #' @param col The color of the forest tree (default is '#663399').
-#' @param options The color palette to use (default is page_options$new()).
+#' @param pch The symbol to use for the dots (default is NULL).
 #' @param userect The userect parameter (default is FALSE).
 #' @param height The height of the rectangle, used when userect is TRUE. When NULL, 
 #'        the height is set to 1/5 of the box height.
+#' @param options The color palette to use (default is page_options$new()).
 #'
 #' @return None
 #'
@@ -149,9 +150,9 @@ plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1,
                              col='#663399', pch=NULL, userect=FALSE, height=NULL,
                              options=page_options$new()) {
   
-  br_palette <- options$get_palette()
-  lty_ <- options$forest.line.type
-  lwd_ <- options$forest.line.width
+  br_palette <- options$get_option('br_palette')
+  lty_ <- options$get_option('forest.line.type')
+  lwd_ <- options$get_option('forest.line.width')
   
   if (is.null(col) & N2>1) {
     col <- br_palette[n2]

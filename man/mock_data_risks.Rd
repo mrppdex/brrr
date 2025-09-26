@@ -3,27 +3,29 @@
 \docType{data}
 \name{mock_data_risks}
 \alias{mock_data_risks}
-\title{Mock data used in Benefit-Risk Visualization}
+\title{Mock Benefit-Risk Data for Risks}
 \format{
-\subsection{\code{mock_data_risks}}{
-
-A data frame with 5 rows and 5 columns:
+A data frame with 10 rows and 13 columns:
 \describe{
 \item{endpoint}{The endpoint of the study.}
 \item{treatment}{The treatment arm of the study.}
 \item{placebo}{The placebo arm of the study.}
 \item{estimator}{Estimator name.}
-\item{axis_number}{The number of axis used for separating the axes.}
+\item{axis_number}{The number of the axis for separating the axes.}
 \item{value}{The value of the estimator.}
-\item{lower}{The lower bound of the estimator.}
-\item{upper}{The upper bound of the estimator.}
-}
+\item{lower}{The lower bound of the confidence interval.}
+\item{upper}{The upper bound of the confidence interval.}
+\item{reversed}{A logical indicating if the axis is reversed.}
+\item{logscale}{A logical indicating if the axis is in log scale.}
+\item{logbase}{The base of the logarithm.}
+\item{txt_val}{A character column with text values.}
 }
 }
 \usage{
 mock_data_risks
 }
 \description{
-Mock data used in Benefit-Risk Visualization
+A dataset containing mock data for the risk component of a benefit-risk assessment.
+This data is used in examples and tests.
 }
 \keyword{datasets}

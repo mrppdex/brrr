@@ -4,13 +4,20 @@
 \alias{create_header}
 \title{Create a header for a page}
 \usage{
-create_header(breaks_widths, labels = NULL, options = page_options$new())
+create_header(
+  breaks_widths,
+  labels = NULL,
+  header_text_size = NULL,
+  options = page_options$new()
+)
 }
 \arguments{
 \item{breaks_widths}{A numeric vector specifying the widths of the breaks relative to its total width.}
 
 \item{labels}{A character vector specifying the labels for the breaks. Default is NULL.
 If provided, the length of the labels must be the same as the length of breaks_widths.}
+
+\item{header_text_size}{A numeric vector specifying the relative font size of the header labels.}
 
 \item{options}{An instance of the page_options class specifying the options for the page.
 Default is a new instance of the page_options class.}

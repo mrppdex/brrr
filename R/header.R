@@ -7,6 +7,7 @@
 #' @param breaks_widths A numeric vector specifying the widths of the breaks relative to its total width.
 #' @param labels A character vector specifying the labels for the breaks. Default is NULL. 
 #'        If provided, the length of the labels must be the same as the length of breaks_widths.
+#' @param header_text_size A numeric vector specifying the relative font size of the header labels.
 #' @param options An instance of the page_options class specifying the options for the page. 
 #'        Default is a new instance of the page_options class.
 #'
@@ -31,12 +32,12 @@ create_header <- function(breaks_widths, labels=NULL, header_text_size=NULL, opt
 
   breaks <- c(cumsum(abs(breaks_widths)))
 
-  PAGE_BOTTOM_MARGIN <- options$get_page_parameter('PAGE_BOTTOM_MARGIN')
-  PAGE_TOP_MARGIN <- options$get_page_parameter('PAGE_TOP_MARGIN')
-  PAGE_LEFT_MARGIN <- options$get_page_parameter('PAGE_LEFT_MARGIN')
-  PAGE_RIGHT_MARGIN <- options$get_page_parameter('PAGE_RIGHT_MARGIN')
-  HEADER_HEIGHT <- options$get_page_parameter('HEADER_HEIGHT')
-  HEADER_WIDTH <- options$get_page_parameter('HEADER_WIDTH')
+  PAGE_BOTTOM_MARGIN <- options$get_option('PAGE_BOTTOM_MARGIN')
+  PAGE_TOP_MARGIN <- options$get_option('PAGE_TOP_MARGIN')
+  PAGE_LEFT_MARGIN <- options$get_option('PAGE_LEFT_MARGIN')
+  PAGE_RIGHT_MARGIN <- options$get_option('PAGE_RIGHT_MARGIN')
+  HEADER_HEIGHT <- options$get_option('HEADER_HEIGHT')
+  HEADER_WIDTH <- options$get_option('HEADER_WIDTH')
 
   # use grid to plot a rectangle with specified margins
   grid.rect(x = PAGE_LEFT_MARGIN, y = 1 - PAGE_TOP_MARGIN,
@@ -58,7 +59,7 @@ create_header <- function(breaks_widths, labels=NULL, header_text_size=NULL, opt
   # add labels to the segments
   if (!is.null(labels)) {
     for (i in 1:(length(actual_breaks) - 2)) {
-      text_size_ <- options$get_header_font_size()
+      text_size_ <- options$get_option('header.label.font.size')
       if (!is.null(header_text_size) & !is.null(header_text_size[i])) {
         text_size_ <- text_size_*header_text_size[i]
       }
@@ -108,12 +109,12 @@ add_benefit_arrows <- function(obj, neutral_relative_x, direction='up',
                                col='#043099') {
     breaks <- obj$breaks
 
-    HEADER_HEIGHT <- obj$options$get_page_parameter('HEADER_HEIGHT')
-    PAGE_TOP_MARGIN <- obj$options$get_page_parameter('PAGE_TOP_MARGIN')
-    PAGE_LEFT_MARGIN <- obj$options$get_page_parameter('PAGE_LEFT_MARGIN')
-    HEADER_WIDTH <- obj$options$get_page_parameter('HEADER_WIDTH')
+    HEADER_HEIGHT <- obj$options$get_option('HEADER_HEIGHT')
+    PAGE_TOP_MARGIN <- obj$options$get_option('PAGE_TOP_MARGIN')
+    PAGE_LEFT_MARGIN <- obj$options$get_option('PAGE_LEFT_MARGIN')
+    HEADER_WIDTH <- obj$options$get_option('HEADER_WIDTH')
 
-    label_font_size <- obj$options$get_header_font_size()
+    label_font_size <- obj$options$get_option('header.label.font.size')
 
     # last two elements of breaks
     last_breaks <- breaks[(length(breaks)-1):length(breaks)]

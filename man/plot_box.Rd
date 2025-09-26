@@ -18,6 +18,7 @@ plot_box(
   logscale = FALSE,
   b = 10,
   show_axis = TRUE,
+  vline = NULL,
   options = page_options$new()
 )
 }
@@ -47,6 +48,8 @@ plot_box(
 \item{b}{The base for logarithmic scale.}
 
 \item{show_axis}{Logical value indicating whether to show the axis.}
+
+\item{vline}{A numeric value specifying the position of a vertical line.}
 
 \item{options}{The page options object.}
 }

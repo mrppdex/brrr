@@ -2,59 +2,75 @@
 % Please edit documentation in R/options.R
 \name{page_options}
 \alias{page_options}
-\title{Define a class for page options}
-\format{
-An object of class \code{page_options}
-}
+\title{Page Options Class}
 \description{
-Define a class for page options
-
-Define a class for page options
+This R6 class defines and manages options for page layout and plotting.
+It provides a centralized way to control various aspects of the plot,
+such as margins, fonts, colors, and other graphical parameters.
 }
 \details{
-This class represents the options for a page layout.
-It includes properties for the page margins, header height, and color palette.
+The class is initialized with a set of default values for all options.
+These options can be modified using the \code{set_option} method and
+retrieved using the \code{get_option} method.
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{PAGE_TOP_MARGIN}}{The top margin of the page.}
+\item{\code{PAGE_TOP_MARGIN}}{Top margin of the page.}
 
-\item{\code{PAGE_BOTTOM_MARGIN}}{The bottom margin of the page.}
+\item{\code{PAGE_BOTTOM_MARGIN}}{Bottom margin of the page.}
 
-\item{\code{PAGE_LEFT_MARGIN}}{The left margin of the page.}
+\item{\code{PAGE_LEFT_MARGIN}}{Left margin of the page.}
 
-\item{\code{PAGE_RIGHT_MARGIN}}{The right margin of the page.}
+\item{\code{PAGE_RIGHT_MARGIN}}{Right margin of the page.}
 
-\item{\code{HEADER_HEIGHT}}{The height of the header.}
+\item{\code{HEADER_HEIGHT}}{Height of the header.}
 
-\item{\code{HEADER_WIDTH}}{The width of the header.}
+\item{\code{HEADER_WIDTH}}{Width of the header.}
 
-\item{\code{row.label.font.size}}{The font size of the row labels.}
+\item{\code{br_palette}}{Color palette for the plot.}
 
-\item{\code{header.label.font.size}}{The font size of the header labels.}
+\item{\code{row.label.font.size}}{Font size for row labels.}
 
-\item{\code{axis.label.font.size}}{The font size of the axis labels.}
+\item{\code{label.use.separation.line}}{Logical, whether to use a separation line for labels.}
 
-\item{\code{axis.ticks.font.size}}{The font size of the axis ticks.}
+\item{\code{label.font.size}}{Font size for labels.}
 
-\item{\code{axis.ticks.font.rotation}}{The rotation of the axis ticks.}
+\item{\code{label.font.usecolors}}{Logical, whether to use colors for label fonts.}
 
-\item{\code{box.spacing}}{The spacing between boxes.}
+\item{\code{header.label.font.size}}{Font size for header labels.}
 
-\item{\code{box.fill.color}}{The color of the box fill.}
+\item{\code{header.label.color}}{Color for header labels.}
 
-\item{\code{br_palette}}{The color palette for the page.}
+\item{\code{axis.label.font.size}}{Font size for axis labels.}
 
-\item{\code{legend.label.font.size}}{The font size of the legend labels.}
+\item{\code{axis.ticks.font.size}}{Font size for axis ticks.}
 
-\item{\code{legend.header.font.size}}{The font size of the legend header.}
+\item{\code{axis.ticks.font.rotation}}{Rotation for axis ticks.}
 
-\item{\code{legend.fill.color}}{The color of the legend fill.}
+\item{\code{axis.ticks.label.nice}}{Logical, whether to use nice labels for axis ticks.}
 
-\item{\code{forest.line.type}}{The line type for the forest plot.}
+\item{\code{box.spacing}}{Spacing between boxes.}
 
-\item{\code{forest.line.width}}{The line width for the forest plot.}
+\item{\code{box.category.height}}{Height of a single category in a box.}
+
+\item{\code{box.fill.color}}{Fill color for boxes.}
+
+\item{\code{legend.label.font.size}}{Font size for legend labels.}
+
+\item{\code{legend.header.font.size}}{Font size for legend header.}
+
+\item{\code{legend.fill.color}}{Fill color for the legend.}
+
+\item{\code{forest.line.type}}{Line type for the forest plot.}
+
+\item{\code{forest.line.width}}{Line width for the forest plot.}
+
+\item{\code{forest.pch.shift}}{Shift for the pch in the forest plot.}
+
+\item{\code{plot.width}}{Width of the plot in inches.}
+
+\item{\code{plot.height}}{Height of the plot in inches.}
 }
 \if{html}{\out{</div>}}
 }
@@ -62,21 +78,8 @@ It includes properties for the page margins, header height, and color palette.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-page_options-new}{\code{page_options$new()}}
-\item \href{#method-page_options-get_palette}{\code{page_options$get_palette()}}
-\item \href{#method-page_options-set_palette}{\code{page_options$set_palette()}}
-\item \href{#method-page_options-get_page_parameters}{\code{page_options$get_page_parameters()}}
-\item \href{#method-page_options-get_page_parameter}{\code{page_options$get_page_parameter()}}
-\item \href{#method-page_options-set_page_parameter}{\code{page_options$set_page_parameter()}}
-\item \href{#method-page_options-get_label_font_size}{\code{page_options$get_label_font_size()}}
-\item \href{#method-page_options-set_label_font_size}{\code{page_options$set_label_font_size()}}
-\item \href{#method-page_options-get_header_font_size}{\code{page_options$get_header_font_size()}}
-\item \href{#method-page_options-set_header_font_size}{\code{page_options$set_header_font_size()}}
-\item \href{#method-page_options-get_axis_label_font_size}{\code{page_options$get_axis_label_font_size()}}
-\item \href{#method-page_options-set_axis_label_font_size}{\code{page_options$set_axis_label_font_size()}}
-\item \href{#method-page_options-get_axis_ticks_font_size}{\code{page_options$get_axis_ticks_font_size()}}
-\item \href{#method-page_options-set_axis_ticks_font_size}{\code{page_options$set_axis_ticks_font_size()}}
-\item \href{#method-page_options-get_box_spacing}{\code{page_options$get_box_spacing()}}
-\item \href{#method-page_options-set_box_spacing}{\code{page_options$set_box_spacing()}}
+\item \href{#method-page_options-get_option}{\code{page_options$get_option()}}
+\item \href{#method-page_options-set_option}{\code{page_options$set_option()}}
 \item \href{#method-page_options-clone}{\code{page_options$clone()}}
 }
 }
@@ -86,270 +89,54 @@ It includes properties for the page margins, header height, and color palette.
 \subsection{Method \code{new()}}{
 Initialize the page options.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$new(
-  PAGE_TOP_MARGIN = 0.05,
-  PAGE_BOTTOM_MARGIN = 0.05,
-  PAGE_LEFT_MARGIN = 0.05,
-  PAGE_RIGHT_MARGIN = 0.05,
-  HEADER_HEIGHT = convertY(unit(13, "mm"), unitTo = "npc", valueOnly = TRUE)
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{page_options$new(...)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{PAGE_TOP_MARGIN}}{The top margin of the page.}
-
-\item{\code{PAGE_BOTTOM_MARGIN}}{The bottom margin of the page.}
-
-\item{\code{PAGE_LEFT_MARGIN}}{The left margin of the page.}
-
-\item{\code{PAGE_RIGHT_MARGIN}}{The right margin of the page.}
-
-\item{\code{HEADER_HEIGHT}}{The height of the header.}
+\item{\code{...}}{A list of options to override the default values.}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_palette"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_palette}{}}}
-\subsection{Method \code{get_palette()}}{
-Get the color palette for the page.
+\if{html}{\out{<a id="method-page_options-get_option"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-get_option}{}}}
+\subsection{Method \code{get_option()}}{
+Get an option value.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_palette()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The color palette for the page.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_palette"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_palette}{}}}
-\subsection{Method \code{set_palette()}}{
-Set the color palette for the page.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_palette(palette)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{page_options$get_option(name)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{palette}}{The color palette to set.}
+\item{\code{name}}{The name of the option to get.}
 }
 \if{html}{\out{</div>}}
 }
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_page_parameters"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_page_parameters}{}}}
-\subsection{Method \code{get_page_parameters()}}{
-Get the page parameters.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_page_parameters()}\if{html}{\out{</div>}}
-}
-
 \subsection{Returns}{
-A list of the page parameters.
+The value of the option.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_page_parameter"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_page_parameter}{}}}
-\subsection{Method \code{get_page_parameter()}}{
-Get a specific page parameter.
+\if{html}{\out{<a id="method-page_options-set_option"></a>}}
+\if{latex}{\out{\hypertarget{method-page_options-set_option}{}}}
+\subsection{Method \code{set_option()}}{
+Set an option value.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_page_parameter(parameter)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{page_options$set_option(name, value)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{parameter}}{The parameter to get.}
+\item{\code{name}}{The name of the option to set.}
+
+\item{\code{value}}{The new value for the option.}
 }
 \if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-The value of the parameter.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_page_parameter"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_page_parameter}{}}}
-\subsection{Method \code{set_page_parameter()}}{
-Set a specific page parameter.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_page_parameter(parameter, value)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{parameter}}{The parameter to set.}
-
-\item{\code{value}}{The value to set.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_label_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_label_font_size}{}}}
-\subsection{Method \code{get_label_font_size()}}{
-Get the font size of the row labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_label_font_size()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The font size of the row labels.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_label_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_label_font_size}{}}}
-\subsection{Method \code{set_label_font_size()}}{
-Set the font size of the row labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_label_font_size(size)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{The font size to set.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-None
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_header_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_header_font_size}{}}}
-\subsection{Method \code{get_header_font_size()}}{
-Get the font size of the header labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_header_font_size()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The font size of the header labels.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_header_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_header_font_size}{}}}
-\subsection{Method \code{set_header_font_size()}}{
-Set the font size of the header labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_header_font_size(size)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{The font size to set.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-None
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_axis_label_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_axis_label_font_size}{}}}
-\subsection{Method \code{get_axis_label_font_size()}}{
-Get the font size of the axis labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_axis_label_font_size()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The font size of the axis labels.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_axis_label_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_axis_label_font_size}{}}}
-\subsection{Method \code{set_axis_label_font_size()}}{
-Set the font size of the axis labels.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_label_font_size(size)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{The font size to set.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_axis_ticks_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_axis_ticks_font_size}{}}}
-\subsection{Method \code{get_axis_ticks_font_size()}}{
-Get the font size of the axis ticks.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_axis_ticks_font_size()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The font size of the axis ticks.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_axis_ticks_font_size"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_axis_ticks_font_size}{}}}
-\subsection{Method \code{set_axis_ticks_font_size()}}{
-Set the font size of the axis ticks.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_axis_ticks_font_size(size)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{size}}{The font size to set.}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-get_box_spacing"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-get_box_spacing}{}}}
-\subsection{Method \code{get_box_spacing()}}{
-Get the box spacing.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$get_box_spacing()}\if{html}{\out{</div>}}
-}
-
-\subsection{Returns}{
-The box spacing.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-page_options-set_box_spacing"></a>}}
-\if{latex}{\out{\hypertarget{method-page_options-set_box_spacing}{}}}
-\subsection{Method \code{set_box_spacing()}}{
-Set the box spacing.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{page_options$set_box_spacing(spacing)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{spacing}}{The spacing to set.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-None
 }
 }
 \if{html}{\out{<hr>}}

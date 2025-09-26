@@ -1,28 +1,27 @@
-#' Get metadata for a given dataset
+#' Get Metadata for a Dataset
 #'
-#' This function calculates metadata for a given dataset, including the number of unique categories,
-#' minimum and maximum values, whether the data is reversed, and the number of subcategories.
+#' @description
+#' This function calculates metadata for a given dataset. The metadata includes
+#' the number of unique categories, minimum and maximum values, whether the data
+#' is reversed, and the number of subcategories. This information is crucial
+#' for constructing the plot layout.
 #'
 #' @param data The dataset to calculate metadata for.
-#' @param split_axis_by_col The column to split the data by on the x-axis.
+#' @param split_axis_by_col The column to split the data by on the y-axis.
 #' @param axis_labels_col The column containing the axis labels.
 #' @param split_box_by_col The column to split the data by in each box.
+#' @param vline_col The column for vertical lines.
 #'
 #' @return A data frame containing the calculated metadata.
 #'
-#' @examples
-#' \dontrun{
-#' data <- data.frame(
-#'   x = c(1, 2, 3, 1, 2, 3),
-#'   y = c(4, 5, 6, 4, 5, 6),
-#'   category = c("A", "A", "B", "B", "C", "C")
-#' )
-#' get_metadata(data, x, category)
-#' }
-#'
 #' @import dplyr
+#' @import tidyr
 #' @export
 get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_col, vline_col) {
+
+    if (nrow(data) == 0) {
+        return(data.frame())
+    }
 
     if (!'reversed' %in% colnames(data)) {
         data$reversed <- FALSE
@@ -36,7 +35,7 @@ get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_
     mock_data_meta <- data %>%
         group_by_at({{split_axis_by_col}}) %>%
         mutate(across({{split_box_by_col}}, ~ length(unique(.)), .names="ncats")) %>%
-        mutate(across({{vline_col}}, ~ safe_max(.), .names="vertical_line")) %>%
+        mutate(across(any_of(vline_col), ~ safe_max(.), .names="vertical_line")) %>%
         mutate(vertical_line = ifelse('vertical_line' %in% colnames(.), vertical_line, NA)) %>%
         mutate(minval = min(c(value, lower, upper, as.numeric(vertical_line)), na.rm=TRUE), 
                maxval = max(c(value, lower, upper, as.numeric(vertical_line)), na.rm=TRUE)) %>%

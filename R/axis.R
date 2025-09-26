@@ -66,27 +66,19 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
 
     neutral_pos <- ifelse(from > to, n_ticks - neutral_pos, neutral_pos)
 
-    ratio_rhs <- abs(ifelse(to>from, to/(n_ticks-neutral_pos), from/(n_ticks-neutral_pos)))
-    ratio_lhs <- abs(ifelse(to>from, from/neutral_pos, to/neutral_pos))
-
-    
-    ratio <- max(ratio_rhs, ratio_lhs)
-    ratio <- ifelse(logscale, ceiling(abs(ratio))*sign(ratio), ratio)
-
-    # linear tick size
-    if(!logscale) {
-        ratio_lhs_linear <- ifelse(from<to, pretty(abs(from)/neutral_pos)[2], pretty(abs(to)/neutral_pos)[2])
-        ratio_rhs_linear <- ifelse(from<to, pretty(abs(to)/(n_ticks-neutral_pos))[2], pretty(abs(from)/(n_ticks-neutral_pos))[2])
-
-        linear_tick_delta <- max(ratio_lhs_linear, ratio_rhs_linear)
-
-        from_linear <- ifelse(from<=to, linear_tick_delta*neutral_pos, linear_tick_delta*(n_ticks-neutral_pos))
-        to_linear <- ifelse(from<=to, linear_tick_delta*(n_ticks-neutral_pos), linear_tick_delta*neutral_pos)
-        ratio <- linear_tick_delta
+    if (!logscale) {
+        # linear scale
+        range_ <- to - from
+        ratio <- max(abs(from) / neutral_pos, abs(to) / (n_ticks - neutral_pos))
+        ratio <- pretty(c(0, ratio))[2]
+    } else {
+        # log scale
+        ratio <- max(abs(from) / neutral_pos, abs(to) / (n_ticks - neutral_pos))
+        ratio <- ceiling(ratio)
     }
 
-    from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
-    to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
+    from <- ifelse(to > from, -ratio * neutral_pos, ratio * (n_ticks - neutral_pos))
+    to   <- ifelse(to > from, ratio * (n_ticks - neutral_pos), -ratio * neutral_pos)
     
     axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
@@ -188,12 +180,12 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
             }
         }
 
-        axis_tick_font_size  <- options$get_axis_ticks_font_size()
-        axis_label_font_size <- options$get_axis_label_font_size()*0.7
+        axis_tick_font_size  <- options$get_option('axis.ticks.font.size')
+        axis_label_font_size <- options$get_option('axis.label.font.size')*0.7
         axis_label_height <- convertHeight(unit(axis_label_font_size, 'points'),
                                            unitTo='npc', valueOnly = TRUE)
 
-        axis_ticks_font_size <- options$get_axis_ticks_font_size()
+        axis_ticks_font_size <- options$get_option('axis.ticks.font.size')
         axis_ticks_label_height <- convertHeight(unit(axis_ticks_font_size, 'points'),
                                           unitTo='npc', valueOnly = TRUE)
 
@@ -207,7 +199,7 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
                       y = unit(ypos - 1.5*tick_len - axis_ticks_label_height, 'npc'),
                       just = "bottom", 
                       gp = gpar(fontsize = axis_tick_font_size), 
-                      rot=options$axis.ticks.font.rotation)
+                      rot=options$get_option('axis.ticks.font.rotation'))
         }
 
         # add the axis label

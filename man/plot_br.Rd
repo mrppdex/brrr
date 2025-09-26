@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_br.R
 \name{plot_br}
 \alias{plot_br}
-\title{Plot BR}
+\title{Plot Benefit-Risk Data}
 \usage{
 plot_br(
   data,
@@ -11,68 +11,76 @@ plot_br(
   split_axis_by_col,
   axis_labels_col,
   split_box_by_col,
+  vline_col = NULL,
   neutral_pos = 3,
   num_ticks = 6,
   top_margin = NULL,
   userect = FALSE,
   arrow_labels = c("Favors\\nTreatment", "Favors\\nPlacebo"),
   value_collapse = rep(FALSE, length(columns_specs)),
+  label_text_size = NULL,
+  header_text_size = NULL,
   box_group = NULL,
-  options_br = page_options$new()
+  colors_by = NULL,
+  options_br = page_options$new(),
+  filename = NULL
 )
 }
 \arguments{
-\item{data}{The data frame containing the BR data.}
+\item{data}{A data frame containing the data to be plotted.}
 
-\item{columns_specs}{A character named vector specifying the column names in the data frame that correspond to the different columns in the plot.}
+\item{columns_specs}{A named character vector specifying the columns in the plot.}
 
-\item{breaks_widths}{A numeric vector specifying the widths of the breaks between the columns in the plot.}
+\item{breaks_widths}{A numeric vector specifying the relative widths of the columns.}
 
-\item{split_axis_by_col}{A character string specifying the column name in the data frame to split the plot axis by.}
+\item{split_axis_by_col}{The column name to split the y-axis by.}
 
-\item{axis_labels_col}{A character string specifying the column name in the data frame to use as the axis labels.}
+\item{axis_labels_col}{The column name for the axis labels.}
 
-\item{split_box_by_col}{A character string specifying the column name in the data frame to split the boxes within each axis by.}
+\item{split_box_by_col}{The column name to split the boxes by.}
 
-\item{neutral_pos}{A numeric value specifying the neutral position of the plot.}
+\item{vline_col}{The column name for vertical lines (e.g., non-inferiority margin).}
 
-\item{num_ticks}{An optional numeric value specifying the number of ticks on the plot axis.}
+\item{neutral_pos}{The position of the neutral line.}
 
-\item{top_margin}{An optional numeric value specifying the top margin of the plot.}
+\item{num_ticks}{The number of ticks on the axis.}
 
-\item{userect}{A logical value specifying whether to use rectangles in the plot.}
+\item{top_margin}{The top margin of the plot.}
 
-\item{arrow_labels}{A character vector specifying the labels for the arrows in the plot.}
+\item{userect}{Logical, whether to use rectangles for the forest plot.}
 
-\item{value_collapse}{A logical vector specifying whether to collapse the values within each column/row.}
+\item{arrow_labels}{A character vector for the benefit direction arrows.}
 
-\item{box_group}{An optional header object specifying the \code{plot_br} object to group with.}
+\item{value_collapse}{A logical vector indicating whether to collapse values in each column.}
 
-\item{options_br}{An optional page_options object specifying the options for the plot.}
+\item{label_text_size}{A numeric vector to adjust the label text size.}
+
+\item{header_text_size}{A numeric vector to adjust the header text size.}
+
+\item{box_group}{An optional \code{plot_br} object to group with.}
+
+\item{colors_by}{The column name to color the plot elements by.}
+
+\item{options_br}{A \code{page_options} object with plot options.}
+
+\item{filename}{An optional string specifying the filename to save the plot.}
 }
 \value{
-A list containing the boxes in the plot, used options and the last y-position of the plot.
+A list containing the boxes in the plot, used options, and the last y-position.
 }
 \description{
-This function plots BR (Bayesian Regression) data using a forest plot. It takes in various parameters to customize the plot.
+This function creates a forest plot for benefit-risk assessment.
+It visualizes the data using boxes and forest plots, and allows for extensive customization.
 }
 \examples{
 \dontrun{
-#create header
-breaks_widths <- c(0.2, -0.1, 0.1, 0.2)
+data(mock_data)
 columns_specs <- c('Benefits'='endpoint', 
               'Treatment\n(N=100)'='treatment', 
               'Placebo\n(N=100)'='placebo',
               'Comparison\nHR or Odds Ratio\n(95\% CI)'='col3')
-value_collapse <- c(TRUE, FALSE, FALSE, FALSE)
-
-split_axis_by_col <- 'estimator'
-split_box_by_col <- 'endpoint'
-
-# load data and add column
-data(mock_data)
-part1_data <- plot_br(mock_data, columns_specs, breaks_widths, 
-split_axis_by_col, split_box_by_col, top_margin=NULL, value_collapse=value_collapse)
+plot_br(mock_data, columns_specs, c(0.2, -0.1, 0.1, 0.2), 
+        'estimator', 'endpoint', 'endpoint')
 }
 
 }
