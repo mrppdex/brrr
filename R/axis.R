@@ -88,8 +88,6 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
     from <- ifelse(to>from, -ratio*neutral_pos, ratio*(n_ticks-neutral_pos))
     to   <- ifelse(to>from, ratio*(n_ticks-neutral_pos), -ratio*neutral_pos)
     
-    #cat(sprintf('DEBUG: from=%.2f; to=%.2f\n', from, to))
-
     axis_range <- round(seq(from, to, length = n_ticks + 1), 2)
 
     scale_function <- function(x) {
@@ -179,7 +177,11 @@ plot_axis <- function(xlength, xpos, ypos, from, to, n_ticks, neutral_pos,
                 return(eval(parse(text = eval_txt)))
             } else {
                 if(x<0) {
-                    return(sprintf('1/%g', b^(-x)))
+                    return(
+                    ifelse(options$axis.ticks.label.nice,
+                           sprintf('1/%g', b^(-x)),
+                           sprintf('%.2f', b^(x))
+                    ))
                 } else {
                     return(sprintf('%g', b^x))
                 }

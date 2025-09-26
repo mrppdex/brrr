@@ -23,6 +23,7 @@
 #' @field legend.fill.color The color of the legend fill.
 #' @field forest.line.type The line type for the forest plot.
 #' @field forest.line.width The line width for the forest plot.
+#' @field forest.pch.shift Shift for the pch in the forest plot.
 #' 
 #' @format An object of class \code{page_options}
 #' @import R6
@@ -39,20 +40,24 @@ page_options <- R6Class("page_options",
                                            "mediumseagreen" = "#3CB371", "tomato" = "#FF6347", 
                                            "peachpuff" = "#FFDAB9", "lightsalmon" = "#FFA07A"),
                             row.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            label.use.separation.line = FALSE,
                             label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
+                            label.font.usecolors = TRUE,
                             header.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             header.label.color = "#043099",
                             axis.label.font.size = convertUnit(unit(4, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             axis.ticks.font.rotation = 0,
+                            axis.ticks.label.nice = TRUE,
                             box.spacing = convertUnit(unit(20, 'mm'), 'npc', valueOnly=TRUE),
                             box.category.height = unit(15, 'mm'),
                             box.fill.color = "#ded8db43",
                             legend.label.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
                             legend.header.font.size = convertUnit(unit(3, 'mm'), 'points', valueOnly=TRUE),
-                            legend.fill.color = "#ffef0954",
+                            legend.fill.color = "#fffdd0",
                             forest.line.type = 1,
                             forest.line.width = 3,
+                            forest.pch.shift = 0,
                             #' @description Initialize the page options.
                             #' @param PAGE_TOP_MARGIN The top margin of the page.
                             #' @param PAGE_BOTTOM_MARGIN The bottom margin of the page.

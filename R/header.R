@@ -22,7 +22,7 @@
 #' @import grid
 #' 
 #' @export
-create_header <- function(breaks_widths, labels=NULL, options=page_options$new()) {
+create_header <- function(breaks_widths, labels=NULL, header_text_size=NULL, options=page_options$new()) {
 
   # stop when labels is not null and has different length than breaks_widths
   if (!is.null(labels) && length(labels) != length(breaks_widths)) {
@@ -58,11 +58,16 @@ create_header <- function(breaks_widths, labels=NULL, options=page_options$new()
   # add labels to the segments
   if (!is.null(labels)) {
     for (i in 1:(length(actual_breaks) - 2)) {
+      text_size_ <- options$get_header_font_size()
+      if (!is.null(header_text_size) & !is.null(header_text_size[i])) {
+        text_size_ <- text_size_*header_text_size[i]
+      }
+      
       grid.text(label = labels[i], 
                 x = PAGE_LEFT_MARGIN+HEADER_WIDTH*(actual_breaks[i] + actual_breaks[i+1])/2, 
                 y = 1 - PAGE_TOP_MARGIN - HEADER_HEIGHT/2,
                 just = c('center', 'center'),
-                gp = gpar(fontsize = options$get_header_font_size(), fontface = "bold", col=options$header.label.color))
+                gp = gpar(fontsize = text_size_, fontface = "bold", col=options$header.label.color))
     }
   }
 

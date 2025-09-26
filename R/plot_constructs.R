@@ -88,6 +88,7 @@ plot_long_rectangle <- function(box, x, n1, n2=1, N2=1, height=0.015, lty=1, lwd
 #'          col = 'black')
 #' }
 plot_dot <- function(box, x, n1, n2=1, N2=1, pch=NULL, size=unit(1, 'char'), col='black') {
+  
   xvec <- sapply(x, function(x) box$axis$axis_function(x))
   yvec <- box$y_pos[n1] + (box$y_pos[n1+1] - box$y_pos[n1])*n2/(N2+1)
   
@@ -98,7 +99,7 @@ plot_dot <- function(box, x, n1, n2=1, N2=1, pch=NULL, size=unit(1, 'char'), col
   } else {
     pch <- 21 + (pch-1) %% 6
   }
-
+  
   grid.points(x = unit(xvec, 'npc'), y = unit(yvec, 'npc'),
         pch=pch, size=size, gp = gpar(col = col, fill = col))
   
@@ -159,13 +160,13 @@ plot_forest_tree <- function(box, x_lower, x_upper, x_dot, n1, n2=1, N2=1,
   } else if(is.null(col) & N2==1) {
     col <- br_palette[1]
   }
-
+  
   if(!userect) {
     plot_horizontal_seg(box, c(x_lower, x_upper), n1, n2, N2, lty=lty_, lwd=lwd_, col=col)
   } else {
     plot_long_rectangle(box, c(x_lower, x_upper), n1, n2, N2, lty=lty_, lwd=lwd_, col=col, height=height)
   }
-
+  
   plot_dot(box, x_dot, n1, n2, N2, col=col, pch=pch)
   
 }

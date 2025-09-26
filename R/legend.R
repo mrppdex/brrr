@@ -59,16 +59,15 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
         legend_label_font_size_npc <- convertHeight(legend_label_font_size, 'npc')
 
         # draw a box with the label
-        grid.rect(x = xpos, y = ypos, width = width, height = legend_label_font_size_npc*1.5, 
+        grid.rect(x = convertX(xpos, 'npc'), y = ypos, width = width, height = legend_label_font_size_npc*1.5, 
               just = c('left', 'top'),
               gp = gpar(fill = "transparent", lty = 1, lwd = 1))
 
         # draw the label
-        grid.text(label, x = xpos*1.1, y = ypos - legend_label_font_size_npc*0.75, 
+        grid.text(label, x = xpos+convertX(unit(1.5, 'mm'), 'npc'), y = ypos - legend_label_font_size_npc*0.75, 
                   just = c('left', 'center'), 
                   gp = gpar(fontsize = legend_label_font_size, 
-                            fontface='bold',
-                            col = options$br_palette[1]))
+                            fontface='bold', col = 'black')) # col = options$br_palette[1]))
 
         # shift the box down by the label height
         ypos <- ypos - legend_label_font_size_npc*1.5
@@ -121,7 +120,7 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
         }
 
         legend_color <- get_default_color(legend_color)
-        legend_text_color <- get_default_color(legend_text_color)
+        legend_text_color <- ifelse(options$label.font.usecolors, get_default_color(legend_text_color), 'black')
 
         max_width <- convertWidth(unit(20, 'mm'), 'npc', valueOnly=TRUE)
         max_width <- unit(min(max_width, 0.25*legend_width), 'npc')
@@ -150,7 +149,8 @@ add_legend <- function(legend_items, xpos, ypos, width, height,
         }
 
         if(!is.null(legend_label)) {
-            grid.text(legend_label, x = xpos + col_num * legend_width + max_width*1.2, 
+            txt_pos <- ifelse(!is.null(legend_type) & legend_type=='text', 0.05, 1.2)
+            grid.text(legend_label, x = xpos + col_num * legend_width + max_width*txt_pos, 
                       y = ypos - row_num * legend_height - legend_height / 2, just = 'left', 
                       gp = gpar(fontsize = options$legend.label.font.size, 
                                 col=legend_text_color))

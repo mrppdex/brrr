@@ -37,7 +37,9 @@ get_metadata <- function(data, split_axis_by_col, axis_labels_col, split_box_by_
         group_by_at({{split_axis_by_col}}) %>%
         mutate(across({{split_box_by_col}}, ~ length(unique(.)), .names="ncats")) %>%
         mutate(across({{vline_col}}, ~ safe_max(.), .names="vertical_line")) %>%
-        mutate(minval = min(value, lower, upper), maxval = max(value, lower, upper)) %>%
+        mutate(vertical_line = ifelse('vertical_line' %in% colnames(.), vertical_line, NA)) %>%
+        mutate(minval = min(c(value, lower, upper, as.numeric(vertical_line)), na.rm=TRUE), 
+               maxval = max(c(value, lower, upper, as.numeric(vertical_line)), na.rm=TRUE)) %>%
         mutate(reversed = any(reversed)) %>%
         group_by_at(c({{split_box_by_col}}, {{split_axis_by_col}})) %>%
         mutate(nsubcats = n()) %>%

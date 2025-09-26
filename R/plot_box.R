@@ -37,8 +37,6 @@
 plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height, 
                      neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
                      show_axis=TRUE, vline = NULL, options=page_options$new()) {
-  
-    cat('DEBUG: plot_box\n')
 
     # check if single_category_height unit is mm.
     # If true, convert it to npc
@@ -74,7 +72,6 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
                gp = gpar(lty = 2, lwd = 1))
     
     if (!is.null(vline)) {
-      cat('DEBUG: ', vline, '\n')
       grid.lines(x = rep(axis_transform_fun(vline), 2),
                  y = c(ypos, ypos - n_categories * single_category_height),
                  gp = gpar(lty = 3, lwd = 1))
@@ -178,7 +175,8 @@ plot_box <- function(xpos, ypos, xlength, n_categories, single_category_height,
 #' @export
 add_box <- function(obj, spacing, n_categories, single_category_height, 
                     neutral_pos, n_ticks, from, to, label=NULL, logscale=FALSE, b=10, 
-                    show_axis=TRUE, arrow_labels = NULL, direction='up', userect=FALSE, vline=NULL) {
+                    show_axis=TRUE, arrow_labels = NULL, direction='up', userect=FALSE, vline=NULL,
+                    colbreaks=NULL) {
     
     current_y <- NULL
 
@@ -221,6 +219,27 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
     box1 <- plot_box(global_box_x, current_y, global_box_width, n_categories, single_category_height, 
                      neutral_pos, n_ticks, from, to, label, logscale, b, show_axis, vline=vline, options=options)
 
+    # separate values
+    if(options$label.use.separation.line & !is.null(colbreaks) & length(colbreaks)==length(header$breaks_positions)-2) {
+      for (i in 1:(length(header$breaks_positions)-3)) {
+        if(colbreaks[i]>=0) {
+          if (is.unit(single_category_height)) { 
+            single_category_height <- convertY(single_category_height, unitTo='npc', valueOnly = TRUE)
+          } else {
+            single_category_height <- as.numeric(single_category_height)
+          }
+          
+          y_start <- current_y
+          y_end   <- current_y - n_categories*single_category_height 
+          
+          grid.lines(x = c(header$breaks_positions[i+1], header$breaks_positions[i+1]), 
+                     y = c(y_start, y_end), 
+                     gp = gpar(lty = 1, lwd = 0.2, color='lightgray')) 
+        }
+      }
+    }
+    
+    
 
     # read header$breaks_position discard two last elements
     # and calculate the mean of each pair of elements
@@ -228,7 +247,7 @@ add_box <- function(obj, spacing, n_categories, single_category_height,
     breaks_positions <- header$breaks_positions
     breaks_positions <- breaks_positions[1:(length(breaks_positions)-1)]
     breaks_positions <- breaks_positions[-length(breaks_positions)] + diff(breaks_positions)/2
-
+    
     # all labels
     add_label <- function(label, collevel, rowlevel, n=1, N=1, 
                           fontsize=NULL, fontface='bold', col='black', isglobal=FALSE) 
