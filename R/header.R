@@ -38,12 +38,13 @@ create_header <- function(breaks_widths, labels=NULL, header_text_size=NULL, opt
   PAGE_RIGHT_MARGIN <- options$get_option('PAGE_RIGHT_MARGIN')
   HEADER_HEIGHT <- options$get_option('HEADER_HEIGHT')
   HEADER_WIDTH <- options$get_option('HEADER_WIDTH')
+  HEADER_BACKGROUND_COLOR <- options$get_option('header.background.color')
 
   # use grid to plot a rectangle with specified margins
   grid.rect(x = PAGE_LEFT_MARGIN, y = 1 - PAGE_TOP_MARGIN,
             width = 1 - PAGE_LEFT_MARGIN - PAGE_RIGHT_MARGIN,
             height = HEADER_HEIGHT, 
-            gp = gpar(fill = "lightblue"), just=c('left', 'top'))
+            gp = gpar(fill = HEADER_BACKGROUND_COLOR), just=c('left', 'top'))
   
   # plot vertical segments within the rectangle, with specified breaks
   # as the ratio of the width of the rectangle

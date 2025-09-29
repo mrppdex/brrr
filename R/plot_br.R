@@ -41,6 +41,8 @@
 #' }
 #'
 #' @export
+source("R/parsing.R")
+
 plot_br <- function(data, columns_specs, breaks_widths, 
                     split_axis_by_col, axis_labels_col, split_box_by_col, # data splitting
                     vline_col=NULL, # e.g. Non-Inferiority Margin
@@ -57,7 +59,7 @@ plot_br <- function(data, columns_specs, breaks_widths,
   if (!is.null(filename)) {
     svglite(filename, width = options_br$get_option('plot.width'), height = options_br$get_option('plot.height'))
   }
-  
+
   if (is.null(colors_by))  {
     colors_by <- 'tmpcolorsby'
     data <- data %>% mutate(!!colors_by:='x')
@@ -88,7 +90,6 @@ plot_br <- function(data, columns_specs, breaks_widths,
   header_br <- create_header(breaks_widths, names(columns_specs), header_text_size, options=options_br)
 
   # 2. ADD BOXES
-  
   data_meta <- get_metadata(data, split_axis_by_col, axis_labels_col, split_box_by_col, vline_col)
 
   # remember last added graph part
