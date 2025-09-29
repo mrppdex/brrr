@@ -75,7 +75,7 @@ ui <- navbarPage(
   
   
   # --- Endpoints Tab ---
-  tabPanel("3. Endpoints",
+  tabPanel("2. Endpoints",
            fluidPage(
              h3("Endpoint & Axis Configuration"),
              p("Define the main components of your plot, such as benefit and risk sections."),
@@ -85,7 +85,7 @@ ui <- navbarPage(
            )),
   
   # --- Settings Tab ---
-  tabPanel("4. Global Settings",
+  tabPanel("3. Global Settings",
            sidebarLayout(
              sidebarPanel(
                h4("General Page Layout"),
@@ -105,7 +105,10 @@ ui <- navbarPage(
                           numericInputWithReset("HEADER_HEIGHT", "Header Height", default_options$HEADER_HEIGHT),
                           numericInputWithReset("header.label.font.size", "Header Label Font Size", default_options$header.label.font.size),
                           colourInput("header.label.color", "Header Label Color", value = default_options$header.label.color),
-                          colourInput("header.background.color", "Header Background Color", value = default_options$header.background.color)
+                          colourInput("header.background.color", "Header Background Color", value = default_options$header.background.color),
+                          textInput("header_arrow_label_treatment", "Arrow label: Treatment", value = "Favors\\nTreatment", placeholder = "Use \\n for a new line"),
+                          textInput("header_arrow_label_comparator", "Arrow label: Comparator", value = "Favors\\nPlacebo", placeholder = "Use \\n for a new line"),
+                          helpText("Tip: type \\n to insert a line break in the label (e.g., Favors\\nTreatment).")
                  ),
                  tabPanel("Labels & Text", 
                           numericInputWithReset("label.font.size", "Label Font Size", default_options$label.font.size),
@@ -133,7 +136,7 @@ ui <- navbarPage(
            )),
   
   # --- Plot Preview Tab ---
-  tabPanel("5. Plot Preview & Download",
+  tabPanel("4. Plot Preview & Download",
            fluidPage(
              fluidRow(
                column(3, 
@@ -148,7 +151,7 @@ ui <- navbarPage(
              plotOutput("br_plot", height = "800px")
            )),
   # --- Effects Table Tab ---
-  tabPanel("6. Effects Table",
+  tabPanel("5. Effects Table",
            fluidPage(
              h3("EMA-style Effects Table"),
              p("Summarise the same endpoints as your forest plot; optionally include a description column from your data, and export as a publication-ready table."),
@@ -169,8 +172,7 @@ ui <- navbarPage(
                       br(),
                       fluidRow(
                         column(4, downloadButton("dl_effects_html", "Download HTML")),
-                        column(4, downloadButton("dl_effects_csv", "Download CSV")),
-                        column(4, downloadButton("dl_effects_rtf", "Download RTF (experimental)"))
+                        column(4, downloadButton("dl_effects_csv", "Download CSV"))
                       )
                )
              )
@@ -212,7 +214,7 @@ server <- function(input, output, session) {
       category_height = 0.05,
       header_cols = list(
         "Endpoint"  = list(source = "endpoint",  width = 0.20, collapse = FALSE, sep_line = TRUE,  size = 1),
-        "Treatment" = list(source = "treatment", width = 0.10, collapse = FALSE, sep_line = TRUE,  size = 1),
+        "Treatment" = list(source = "treatment", width = 0.10, collapse = FALSE, sep_line = FALSE,  size = 1),
         "Placebo"   = list(source = "placebo",   width = 0.10, collapse = FALSE, sep_line = TRUE,  size = 1)
       )
     )
@@ -322,9 +324,9 @@ server <- function(input, output, session) {
       axis_num = 1, axis_label_col = "estimator", split_box_by_col = "endpoint", split_axis_by_col = "axis_number",
       num_ticks = 6, neutral_pos = 1, category_height = 0.05,
       header_cols = list(
-        "Characteristic" = list(source = "characteristic", width = 0.2, collapse = FALSE, sep_line = TRUE, size = 1),
-        "N"              = list(source = "N",             width = 0.1, collapse = FALSE, sep_line = TRUE, size = 1),
-        "Value"          = list(source = "value_pretty",  width = 0.1, collapse = FALSE, sep_line = TRUE, size = 1)
+        "Endpoint" = list(source = "endpoint", width = 0.2, collapse = FALSE, sep_line = TRUE, size = 1),
+        "Treatment" = list(source = "treatment", width = 0.1, collapse = FALSE, sep_line = FALSE, size = 1),
+        "Placebo" = list(source = "placebo",  width = 0.1, collapse = FALSE, sep_line = TRUE, size = 1)
       )
     )
     endpoint_sections(sections)
@@ -463,6 +465,15 @@ server <- function(input, output, session) {
   })
   
 
+  # Convert simple escape sequences typed in textInput to actual characters
+  unescape_specials <- function(x) {
+    if (is.null(x)) return("")
+    x <- as.character(x)
+    x <- gsub("\\\\n", "\n", x, perl = TRUE)
+    x <- gsub("\\\\t", "\t", x, perl = TRUE)
+    x
+  }
+
   # Build a fresh, side-effect-free page_options from current UI inputs
   build_page_options <- function() {
     vals <- sapply(global_setting_ids, function(id) input[[id]], simplify = FALSE)
@@ -502,17 +513,28 @@ server <- function(input, output, session) {
     grid.newpage()
     opts <- params$options
 
-  opts <- params$options
-  # Clone if available to avoid mutating the original options object
-  if (is.list(opts) && !is.null(opts$clone) && is.function(opts$clone)) {
-    opts <- opts$clone(deep = TRUE)
-  }
-  # Force PAGE_TOP_MARGIN to current UI value for this draw
-  if (!is.null(input$PAGE_TOP_MARGIN))
-    try(opts$set_option("PAGE_TOP_MARGIN", as.numeric(input$PAGE_TOP_MARGIN)), silent = TRUE)
+    opts <- params$options
+    # Clone if available to avoid mutating the original options object
+    if (is.list(opts) && !is.null(opts$clone) && is.function(opts$clone)) {
+      opts <- opts$clone(deep = TRUE)
+    }
+    # Force PAGE_TOP_MARGIN to current UI value for this draw
+    if (!is.null(input$PAGE_TOP_MARGIN))
+      try(opts$set_option("PAGE_TOP_MARGIN", as.numeric(input$PAGE_TOP_MARGIN)), silent = TRUE)
+
+    # Build arrow labels from UI (convert literal `\\n` to real newlines)
+    arrow_labels_input <- c(input$header_arrow_label_treatment %||% "",
+                            input$header_arrow_label_comparator %||% "")
+    if (all(nchar(arrow_labels_input) == 0)) {
+      arrow_labels <- c("Favors\nTreatment", "Favors\nPlacebo")
+    } else {
+      arrow_labels <- vapply(arrow_labels_input, unescape_specials, FUN.VALUE = character(1))
+    }
 
     sections <- params$endpoints
     req(length(sections) > 0)
+    
+    print(opts)
     
     # Chain by passing the *entire* returned object from plot_br() to the next call
     last_plot_object <- NULL
@@ -547,6 +569,7 @@ server <- function(input, output, session) {
           value_collapse = value_collapse_vec,
           header_text_size = header_text_size_vec,
           box_group = last_plot_object,
+          arrow_labels = arrow_labels,
           options_br = opts
         )
       }, error = function(e) {
@@ -751,32 +774,7 @@ server <- function(input, output, session) {
       readr::write_csv(d[ , export_cols, drop = FALSE], file)
     }
   )
-  
-  # Minimal RTF export using gt + package 'glue' to wrap as simple RTF (no images)
-  # This is intentionally simple for broad compatibility.
-  output$dl_effects_rtf <- downloadHandler(
-    filename = function() sprintf("effects_table_%s.rtf", Sys.Date()),
-    content = function(file) {
-      d <- effects_df()
-      export_cols <- c("Section", "Endpoint",
-                       if (isTRUE(input$effects_show_measure)) "Estimator" else NULL,
-                       "Effect",
-                       if (isTRUE(input$effects_show_ci)) "CI95" else NULL,
-                       if (isTRUE(input$effects_include_desc) && nzchar(input$effects_desc_col %||% "")) "Description" else NULL)
-      dat <- d[ , export_cols, drop = FALSE]
-      # Very simple RTF render
-      sanitize <- function(x) gsub("[\\{}]", " ", x)
-      header <- paste0("{\\rtf1\\ansi\\deff0\n{\\b ", sanitize(input$effects_title %||% "Effects Table"), "}\\par\n\n")
-      if (nzchar(input$effects_subtitle)) header <- paste0(header, sanitize(input$effects_subtitle), "\\par\n\n")
-      colline <- paste(vapply(names(dat), sanitize, ""), collapse = "\t")
-      rows <- apply(dat, 1, function(r) paste(vapply(r, function(x) sanitize(as.character(x)), ""), collapse = "\t"))
-      body <- paste(c(colline, rows), collapse = "\\par\n")
-      footer <- if (nzchar(input$effects_footnote)) paste0("\\par\n\n", sanitize(input$effects_footnote), "\\par") else ""
-      cat(header, body, footer, "}\n", file = file, sep = "")
-    }
-  )
-  
-  
+
 }
 
 
