@@ -1,0 +1,138 @@
+{
+  "data_types": [
+    {
+      "id": "Text",
+      "label": "Text",
+      "category": "standard"
+    },
+    {
+      "id": "Numeric",
+      "label": "Numeric",
+      "category": "standard"
+    },
+    {
+      "id": "Categorical",
+      "label": "Categorical",
+      "category": "standard",
+      "ui_elements": [
+        {
+          "id": "categorical_values",
+          "label": "Allowed Values (comma-separated)",
+          "type": "textAreaInput"
+        }
+      ],
+      "value_constructor": [
+        { "key": "Values", "id": "categorical_values" }
+      ]
+    },
+    {
+      "id": "File Path",
+      "label": "File Path",
+      "category": "standard"
+    },
+    {
+      "id": "Regex",
+      "label": "Regex",
+      "category": "standard",
+      "ui_elements": [
+        {
+          "id": "regex_pattern",
+          "label": "Regex Pattern",
+          "type": "textInput",
+          "placeholder": "e.g., ^[A-Z]{2}$"
+        }
+      ],
+      "value_constructor": [
+        { "key": "Pattern", "id": "regex_pattern" }
+      ]
+    },
+    {
+      "id": "DataCheck",
+      "label": "Data Check",
+      "category": "complex",
+      "ui_elements": [
+        {
+          "id": "data_check_path_col",
+          "label": "Name of Path Column",
+          "type": "textInput",
+          "placeholder": "e.g., PathColumn"
+        },
+        {
+          "id": "data_check_filter_col",
+          "label": "Name of JSON Filter Column",
+          "type": "textInput",
+          "placeholder": "e.g., FilterColumn"
+        }
+      ],
+      "value_constructor": [
+        { "key": "path_col", "id": "data_check_path_col" },
+        { "key": "filter_col", "id": "data_check_filter_col" }
+      ]
+    }
+  ],
+  "function_mapping": {
+    "perform_ards_check": {
+      "id": "perform_ards_check",
+      "path": "modules/perform_ards_check.R",
+      "label": "BR data",
+      "args": {
+        "required": ["filter", "measure", "difference_measure", "difference_lci", "difference_uci"],
+        "optional": {
+          "cmp_name": "Placebo",
+          "ref_column": "reftrt",
+          "trt_column": "trt",
+          "resulttype_column": "resulttype",
+          "result_column": "result"
+        }
+      }
+    },
+    "plot_effect": {
+      "id": "plot_effect",
+      "path": "modules/plot_effect.R",
+      "label": "Forest Plot",
+      "args": {
+        "required": ["filter", "measure","difference_measure", "difference_lci","difference_uci"],
+        "optional": {
+          "cmp_name": "Placebo",
+          "ref_column": "reftrt",
+          "trt_column": "trt",
+          "resulttype_column": "resulttype",
+          "result_column": "result"
+        }
+      }
+    },
+    "volcano_plot": {
+      "id": "volcano_plot",
+      "path": "modules/volcano_plot.R",
+      "label": "Volcano Plot",
+      "args": {
+        "required": [
+          "filter",
+          "pt_column",
+          "pval_name",
+          "effect_name"
+        ],
+        "optional": {
+          "trt_column": "trt",
+          "reftrt_column": "reftrt",
+          "result_column": "result",
+          "resulttype_column": "resulttype",
+          "cmp_name": "Placebo"
+        }
+      }
+    },
+    "mock_shell": {
+      "id": "mock_shell",
+      "path": "modules/mock_shell.R",
+      "label": "Mock Shell",
+      "args": {
+        "required": [],
+        "optional": {
+          "header_specs": "NULL",
+          "title": "NULL",
+          "footnote": "NULL"
+        }
+      }
+    }
+  }
+}
