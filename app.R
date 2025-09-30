@@ -42,35 +42,11 @@ ui <- navbarPage(
   
   # --- Data Tab ---
   tabPanel("1. Data",
-           sidebarLayout(
-             sidebarPanel(
-               h4("Upload Data"),
-               fileInput("file1", "Choose CSV or RDS File",
-                         accept = c(".csv", ".rds")),
-               tags$hr(),
-               h4("Use Mock Data"),
-               actionButton("load_mock_benefit", "Load Benefit Mock Data"),
-               actionButton("load_mock_risk", "Load Risk Mock Data"),
-               tags$hr(),
-               h4("Required Columns"),
-               p("Your data should contain these columns:"),
-               tags$ul(
-                 tags$li(strong("value")),
-                 tags$li(strong("lower")),
-                 tags$li(strong("upper")),
-                 tags$li(strong("axis_number")),
-                 tags$li(strong("logscale")),
-                 tags$li(strong("logbase")),
-                 tags$li(strong("reversed")),
-                 tags$li(strong("improvement_direction")),
-                 tags$li(strong("non_inferiority_margin"))
-               )
-             ),
-             mainPanel(
-               h3("Current Data"),
-               dataTableOutput("contents")
-             )
-           )),
+           mainPanel(
+             h3("Current Data"),
+             dataTableOutput("contents")
+           )
+  ),
   
   
   
@@ -198,13 +174,20 @@ server <- function(input, output, session) {
   # ------------------------------
   # Reactive state
   # ------------------------------
-  app_data <- reactiveVal(mock_data)
+  app_data <- reactiveVal()
+  
+  observe({
+    processed_data <- try(read.csv("modular_specs_validator/processed-data.csv"))
+    if (!inherits(processed_data, "try-error")) {
+      app_data(processed_data)
+    }
+  })
   
   endpoint_sections <- reactiveVal(list(
     list(
       id = 1,
       title = "Benefits",
-      data_source = "mock_benefit",
+      data_source = "app_data",
       axis_num = 1,
       axis_label_col = "estimator",
       split_box_by_col = "endpoint",
@@ -220,34 +203,11 @@ server <- function(input, output, session) {
     )
   ))
   
-  all_data <- reactiveValues(
-    mock_benefit = mock_data,
-    mock_risk    = mock_data_risks
-  )
+  all_data <- reactiveValues(app_data = app_data)
   
   # ------------------------------
   # Data tab
   # ------------------------------
-  observeEvent(input$file1, {
-    req(input$file1)
-    ext <- tools::file_ext(input$file1$name)
-    new_data <- switch(ext,
-                       csv = read.csv(input$file1$datapath),
-                       rds = readRDS(input$file1$datapath),
-                       validate("Invalid file type; Please upload a .csv or .rds file")
-    )
-    all_data$uploaded <- new_data
-    app_data(new_data)
-    current_sections <- endpoint_sections()
-    if (length(current_sections) > 0) {
-      current_sections[[1]]$data_source <- "uploaded"
-      endpoint_sections(current_sections)
-    }
-  })
-  
-  observeEvent(input$load_mock_benefit, { app_data(mock_data) })
-  observeEvent(input$load_mock_risk,    { app_data(mock_data_risks) })
-  
   output$contents <- renderDataTable({ app_data() })
   
   # ------------------------------
