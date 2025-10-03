@@ -99,6 +99,9 @@ plot_br <- function(data, columns_specs, breaks_widths,
   
   data_meta <- data_meta %>% arrange(across(any_of(split_axis_by_col)))
 
+  value_collapse <- rep_len(value_collapse, length(columns_specs))
+  value_collapse[1] <- TRUE
+
   for (est in unique(data_meta[[split_axis_by_col]])) {
     data_meta_subset <- data_meta %>% 
       filter(if_all(split_axis_by_col, ~ .x==est))
@@ -160,6 +163,10 @@ plot_br <- function(data, columns_specs, breaks_widths,
 
     unique_endpoints <- unique(data_subset[[split_box_by_col]])
 
+    # keep track of seen values when collapsing
+    seen_values <- vector('list', length(column_names))
+    seen_na <- rep(FALSE, length(column_names))
+
     # plot data
     
     for (ben_idx in seq_along(unique_endpoints)) {
@@ -173,9 +180,40 @@ plot_br <- function(data, columns_specs, breaks_widths,
       for (cn_idx in seq_along(column_names)) {
         column_name <- columns_specs[cn_idx]
         unique_column_names <- data_sub_subset[[column_name]]
-        if(value_collapse[cn_idx]) {
-          
+        collapse_column <- value_collapse[cn_idx] || cn_idx == 1
+        if(collapse_column) {
           unique_column_names <- unique(unique_column_names)
+
+          if (is.null(seen_values[[cn_idx]])) {
+            seen_values[[cn_idx]] <- character()
+          }
+
+          keep_idx <- rep(TRUE, length(unique_column_names))
+
+          for (val_idx in seq_along(unique_column_names)) {
+            val <- unique_column_names[val_idx]
+
+            if (is.na(val)) {
+              if (seen_na[cn_idx]) {
+                keep_idx[val_idx] <- FALSE
+              } else {
+                seen_na[cn_idx] <- TRUE
+              }
+            } else {
+              val_key <- as.character(val)
+              if (val_key %in% seen_values[[cn_idx]]) {
+                keep_idx[val_idx] <- FALSE
+              } else {
+                seen_values[[cn_idx]] <- c(seen_values[[cn_idx]], val_key)
+              }
+            }
+          }
+
+          unique_column_names <- unique_column_names[keep_idx]
+
+          if (!length(unique_column_names)) {
+            next
+          }
         }
         
         text_size_ <- options_br$get_option('label.font.size')
